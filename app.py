@@ -7,12 +7,12 @@ import pymysql
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from flask import Flask, render_template, request, redirect, url_for, session, sessions, jsonify
-from user import Usuario
+from models.user import Usuario
 from config.db import connectToMySQL
-from product import Producto, Categoria
+from models.product import Producto, Categoria
 
 
-app = Flask(__name__, static_folder='../web', template_folder='../web')
+app = Flask(__name__, static_folder='./static')
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K' 
 
 
