@@ -2,7 +2,6 @@ import sys
 import os
 import uuid
 import qrcode
-import pymysql
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -161,10 +160,10 @@ def register():
     
     
 base_dir = os.path.abspath(os.path.dirname(__file__))
-qr_dir = os.path.join(base_dir, '..', 'web', 'img', 'qr')
+qr_dir = os.path.join(base_dir, 'static', 'img', 'qr')
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
-qr_dir = os.path.join(base_dir, '..', 'web', 'img', 'qr')
+qr_dir = os.path.join(base_dir, 'static', 'img', 'qr')
 
 def generate_qr_code(codigo_qr):
     qr = qrcode.QRCode(
