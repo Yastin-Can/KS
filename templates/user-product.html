@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="icon" href="{{ url_for('static', filename='img/main/icono.ico') }}">
+
 </head>
 
 <body>
@@ -160,7 +162,6 @@
                         <div id="carrito">
                             <h2>Carrito de Compras</h2>
                             <ul id="lista-carrito">
-                                <!-- Aquí se mostrarán los productos del carrito -->
                             </ul>
                             <p>Precio Final: <span id="precio-final">$0.00</span></p>
                             <button type="button" onclick="confirmarCompra()">CONFIRMAR COMPRA</button>
@@ -262,9 +263,9 @@
                                 <div class="precio">
                                     <p id="valor-product">${{ producto.precio }}</p>
                                     <form action="/carrito/agregar" method="post">
-                                        <input type="text"  name="producto_id" value="{{producto.id}}" hidden>
+                                        <input type="text" name="producto_id" value="{{producto.id}}" hidden>
                                         <button class="btn-comprar" type="submit">Añadir <i
-                                            class="fa-solid fa-basket-shopping"></i></button>
+                                                class="fa-solid fa-basket-shopping"></i></button>
                                     </form>
                                 </div>
                             </div>
