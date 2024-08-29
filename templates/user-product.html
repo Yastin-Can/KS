@@ -262,6 +262,7 @@
                                 <p id="name-product">{{ producto.nombre }}</p>
                                 <div class="precio">
                                     <p id="valor-product">${{ producto.precio }}</p>
+                                    <p>1 <span><img id="corazon" src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""></span></p>
                                     <form action="/carrito/agregar" method="post">
                                         <input type="text" name="producto_id" value="{{producto.id}}" hidden>
                                         <button class="btn-comprar" type="submit">Añadir <i
