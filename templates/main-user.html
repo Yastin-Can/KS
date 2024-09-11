@@ -7,7 +7,8 @@
     <title>{% block title %}Kiosco Saludable{% endblock %}</title>
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link rel="icon" href="{{ url_for('static', filename='img/main/icono.ico') }}">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
@@ -19,26 +20,26 @@
 
     <nav class="navbar">
         <div class="navbar-left">
-            <a href="{{ url_for('index_user') }}">
+            <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='img/main/logo.png') }}" alt="Logo" class="logo">
             </a>
         </div>
         <div class="navbar-center">
             <ul>
                 <li class="menu-container">
-                    <a id="link-index" href="{{ url_for('index_user') }}"
-                        onclick="activateLink('link-index')">INICIO</a>
+                    <a id="link-index" href="{{ url_for('index') }}" onclick="activateLink('link-index')">INICIO</a>
                 </li>
                 <li class="menu-container">
-                    <a id="link-product" href="{{ url_for('compras') }}" onclick="activateLink('link-product')">PIDE
+                    <a id="link-product" href="{{ url_for('productos') }}" onclick="activateLink('link-product')">PIDE
                         AQUI</a>
                 </li>
                 <li class="menu-container">
-                    <a id="link-contact" href="{{ url_for('contacto') }}"
+                    <a id="link-contact" href="{{ url_for('contact') }}"
                         onclick="activateLink('link-contact')">CONTACTANOS</a>
                 </li>
             </ul>
         </div>
+        {% if user %}
         <div class="navbar-right">
             <div class="usuario">
                 <div id="perfil">
@@ -48,7 +49,7 @@
                         </div>
                         <div class="textx">
                             <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
-                            <h6 class="minus">{{ user.ps }}</h6>
+                            <h6 class="minus">{{ session['ps'] }}</h6>
                         </div>
                     </button>
                     <button id="btn-carrito">
@@ -60,11 +61,36 @@
                 </div>
             </div>
             <div id="user-name">
-                <h3>{{ user.nombre }}</h3>
+                {% if user %}
+                <h3>{{ session['username'] }}</h3>
+                {% endif %}
             </div>
         </div>
+        {% else %}
+        <div class="navbar-right">
+            <div class="usuario">
+                <div id="perfil">
+                    <div class="text">
+                        <h3>GANA</h3>
+                        <h6 class="minus">PUNTOS</h6>
+                    </div>
+                    <div>
+                        <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
+                    </div>
+                    <div class="text">
+                        <h3>UNETE</h3>
+                        <h6 class="minus">AQUI</h6>
+                    </div>
+                </div>
+                <div class="login">
+                    <a href="{{ url_for('cuenta') }}"><button class="btnn">Registrarse</button></a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </nav>
 
+    {% if user%}
     <!-- Contenedor para el perfil del usuario -->
     <div id="menu-containerr" class="menu-container">
         <div class="contentt" id="mobile-menu-2">
@@ -79,7 +105,9 @@
                                 <div class="textx">
                                     <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                         id="corazon-2">
-                                    <h6 class="minus">{{ user.ps }}</h6>
+                                    {% if user %}
+                                    <h6 class="minus">{{ session['ps'] }}</h6>
+                                    {% endif %}
                                 </div>
                             </button>
                             <button id="btn-carritor">
@@ -91,15 +119,16 @@
                         </div>
                     </div>
                     <div id="user-name">
-                        <h3>{{ user.nombre }}</h3>
-                        <p>EDITAR</p>
+                        {% if user %}
+                        <h3>{{ session['username'] }}</h3>
+                        {% endif %} <p>EDITAR</p>
                     </div>
                 </div>
                 <div class="navbar-centerr">
                     <ul class="centrar-ul">
-                        <li class="menu-container-"><a href="{{ url_for('index_user') }}">INICIO</a></li>
-                        <li class="menu-container-"><a href="{{ url_for('compras') }}">PIDE AQUI</a></li>
-                        <li class="menu-container-"><a href="{{ url_for('contacto') }}">CONTACTANOS</a></li>
+                        <li class="menu-container-"><a href="{{ url_for('index') }}">INICIO</a></li>
+                        <li class="menu-container-"><a href="{{ url_for('productos') }}">PIDE AQUI</a></li>
+                        <li class="menu-container-"><a href="{{ url_for('contact') }}">CONTACTANOS</a></li>
                         <li>
                             <ul class="centrar-ul">
                                 <li>
@@ -107,7 +136,7 @@
                                 </li>
                                 <li>
                                     <a href="" id="codigo_qr">
-                                        <img src="{{ url_for('static', filename='img/qr/' + user.qr + '.png') }}"
+                                        <img src="{{ url_for('static', filename='img/qr/' + session['qr'] + '.png') }}"
                                             alt="Código QR" id="qr">
                                     </a>
                                 </li>
@@ -126,7 +155,7 @@
         </div>
     </div>
 
-    <!-- Contenedor para el carrito de compras -->
+    <!-- Contenedor para el carrito de productos -->
     <div id="menu-containerrr" class="menu-container">
         <div class="contentt" id="mobile-menu-3">
             <div class="navbarr">
@@ -140,7 +169,9 @@
                                 <div class="textx">
                                     <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                         id="corazon-2">
-                                    <h6 class="minus">{{ user.ps }}</h6>
+                                    {% if user %}
+                                    <h6 class="minus">{{ session['ps'] }}</h6>
+                                    {% endif %}
                                 </div>
                             </button>
                             <button id="btn-carritorr">
@@ -152,7 +183,9 @@
                         </div>
                     </div>
                     <div id="user-name">
-                        <h3>{{ user.nombre }}</h3>
+                        {% if user %}
+                        <h3>{{ session['username'] }}</h3>
+                        {% endif %}
                         <p>EDITAR</p>
                     </div>
                 </div>
@@ -172,6 +205,8 @@
         </div>
     </div>
 
+    {% endif%}
+
 
 
 
@@ -188,6 +223,7 @@
     {% block content %}{% endblock %}
     <div class="content" id="mobile-menu">
         <div class="navbar-">
+            {% if user %}
             <div class="navbar-right-">
                 <div class="usuario">
                     <div id="perfil">
@@ -198,26 +234,48 @@
                             <div class="textx">
                                 <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                     id="corazon-">
-                                <h6 class="minus">{{ user.ps }}</h6>
+                                <h6 class="minus">{{ session['ps'] }}</h6>
                             </div>
                         </button>
                     </div>
                 </div>
-                <div id="user-name">
-                    <h3>{{ user.nombre }}</h3>
+            </div>
+            <div id="user-name">
+                <h3>{{ session['username'] }}</h3>
+            </div>
+            {% else %}
+            <div class="navbar-">
+                <div class="parabajo">
+                    <div class="usuario">
+                        <div id="perfil">
+                            <div class="text">
+                                <h3>GANA</h3>
+                                <h6 class="minus">PUNTOS</h6>
+                            </div>
+                            <div>
+                                <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
+                            </div>
+                            <div class="text">
+                                <h3>UNETE</h3>
+                                <h6 class="minus">AQUI</h6>
+                            </div>
+                        </div>
+                        <div class="login">
+                            <a href="{{ url_for('cuenta') }}"><button class="btnn">Registrarse</button></a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="navbar-center-">
-                <ul>
-                    <li class="menu-container-"><a href="{{ url_for('index_user') }}">INICIO</a></li>
-                    <li class="menu-container-"><a href="{{ url_for('compras') }}">PIDE AQUI</a></li>
-                    <li class="menu-container-"><a href="{{ url_for('contacto') }}">CONTACTANOS</a></li>
-                </ul>
-            </div>
-
+            {% endif%}
+        </div>
+        <div class="navbar-center-">
+            <ul>
+                <li class="menu-container-"><a href="{{ url_for('index') }}">INICIO</a></li>
+                <li class="menu-container-"><a href="{{ url_for('productos') }}">PIDE AQUI</a></li>
+                <li class="menu-container-"><a href="{{ url_for('contact') }}">CONTACTANOS</a></li>
+            </ul>
         </div>
     </div>
-
 
 
 

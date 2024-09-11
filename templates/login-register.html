@@ -16,13 +16,20 @@
             <button>Salir</button>
         </a>
     </div>
+
     <div class="container" id="main">
         <div class="sing-up">
+            <ul>
+                {% for e in register_errors %}
+                <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
             <form action="/register" method="POST">
                 <h1>Crear Cuenta</h1>
                 <input type="text" name="nombre" placeholder="Name" required="">
                 <input type="email" name="email" placeholder="Email" required="">
                 <input type="password" name="pswd" placeholder="Password" required="">
+                <input type="password" name="pswd2" placeholder="Confirma Contraseña" required="">
                 <button type="submit">Registrar</button>
             </form>
 
@@ -30,6 +37,11 @@
 
 
         <div class="sing-in">
+            <ul>
+                {% for e in login_errors %}
+                <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
             <form action="/login" method="POST">
                 <h1>Iniciar Sesión</h1>
                 <input type="email" name="email" placeholder="Email" required="">
@@ -52,6 +64,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="salida">
+        <form action="/session-delete">
+            <button type="submit">BORRAR SESSION</button>
+        </form>
     </div>
 </body>
 
