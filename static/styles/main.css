@@ -100,6 +100,8 @@ h6 {
 .usuario,
 .login {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     margin-right: 20px;
 }
@@ -136,8 +138,12 @@ h6 {
 .nav-superior {
     display: none;
 }
+#name-product{
+    text-align: center;
+    max-width: 15vw;
+}
 
-@media (max-width: 767px)  {
+@media (max-width: 768px)  {
     .los-productos {
         display: flex !important;
         justify-content: space-evenly;
@@ -175,6 +181,11 @@ h6 {
     body {
         margin-top: 11vw;
         color: #fff;
+    }
+    .parabajo {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 
     ul,
@@ -226,6 +237,14 @@ h6 {
 
     .usuario- {
         margin-bottom: 0vw;
+    }
+    .usuario,
+    .login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
     }
 
     #mobile-menu {
@@ -317,11 +336,14 @@ h6 {
         align-items: center;
         margin: 0 10vw;
     }
-
-    .content .menu-container- {
-        margin-top: 5%;
-        margin-bottom: 20%;
+    .content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 100%;
+        
     }
+
 
     .Productos {
         width: 100%;
@@ -629,13 +651,29 @@ a.active {
 .el-producto {
     flex: 1;
     min-height: 7vw;
-    min-width: 7vw;
     max-height: 15vw;
     max-width: 15vw;
     width: 10vw;
     height: 10vw;
     border-radius: 1.5vw;
     margin-right: 1vw;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+}
+.cocoro img {
+    width: 2vw;
+    height: 2vw;
+}
+.PS {
+    display: flex;
+    align-items: center;
+    margin-left: 15%;
+    margin-top: -5%;
+    font-size: 1.5vw;
+    font-weight: 2vw;
 }
 
 /* FOOTER */
