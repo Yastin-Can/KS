@@ -188,18 +188,25 @@
                         <p>EDITAR</p>
                     </div>
                 </div>
+                {% if session['carrito_items'] %}
                 <div class="navbar-centerr">
-                    <ul class="centrar-ul">
+                    <div class="centrar-ul">
                         <li>PRODUCTOS</li>
+                        {% for item in session['carrito_items'] %}
+                        <li>{{ item.nombre }} ({{ item.cantidad }})</li>
+                        {% endfor %}
                         <li>
-                            <form action="" method="post">
+                            <form action="/carrito/confirmar" method="post">
                                 <button type="submit" class="logout">
                                     <p>CONFIRMAR COMPRA</p>
                                 </button>
                             </form>
                         </li>
-                    </ul>
+                    </div>
                 </div>
+                {% else %}
+                <p>El carrito está vacío</p>
+                {% endif %}
             </div>
         </div>
     </div>

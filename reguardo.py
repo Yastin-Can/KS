@@ -189,32 +189,13 @@ def logout():
 
 @app.route('/carrito/agregar', methods=['POST'])
 def agregar_al_carrito():
-    print(session) 
-    if 'username' not in session:
-        return redirect(url_for('login'))
+    producto_id = request.form['producto_id']
+    usuario_id = session.get('usuario_id')
     
-    usuario_id = session['id']
-    producto_id = request.form.get('producto_id')
-    try:
-        producto_id = int(producto_id)  
-    except ValueError:
-        return redirect(url_for('mostrar_carrito')) 
-    
-    cantidad = 1  
+    if not usuario_id:
+        return redirect(url_for('cuenta'))
 
     Carrito.agregar_producto(usuario_id, producto_id)
-    
-    usuario = Usuario.select_by_email(session['id'])
-
-    producto = Producto.get_by_id(producto_id)
-    print("producto", producto)
-    if not producto:
-        return redirect(url_for('mostrar_carrito'))  
-
-    usuario.ps += (producto.precio * cantidad) // 300
-    
-    session['carrito_items'] = Carrito.obtener_items(usuario_id)
-    
     return redirect(url_for('mostrar_carrito'))
 @app.route('/carrito/confirmar', methods=['POST'])
 def confirmar_compra():
