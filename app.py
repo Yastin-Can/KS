@@ -21,6 +21,13 @@ app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 
 bcrypt = Bcrypt(app)
 
+
+
+###################################
+#-------- RUTAS SECCIONES --------#
+###################################
+
+
 @app.route('/')
 def index():
     num_imagenes = 1
@@ -75,6 +82,78 @@ def contact():
     return render_template('user-contact.html', user=user)
 
 
+
+
+###################################
+#-------- GENERADOR QR    --------#
+###################################
+
+
+    
+base_dir = os.path.abspath(os.path.dirname(__file__))
+qr_dir = os.path.join(base_dir, 'static', 'img', 'qr')
+def generate_qr_code(codigo_qr):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(codigo_qr)
+    qr.make(fit=True)
+
+    img = qr.make_image(fill='black', back_color='white')
+    img_path = os.path.join(qr_dir, f'{codigo_qr}.png') 
+    img.save(img_path)
+
+
+
+###################################
+#-------- RUTAS CARRITO ----------#
+###################################
+
+
+@app.route('/carrito/agregar', methods=['POST'])
+
+def agregar_al_carrito():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    
+    usuario_id = session['id']
+    producto_id = request.form.get('producto_id')
+    try:
+        producto_id = int(producto_id)  
+    except ValueError:
+        return 'Error: la id del producto es: %s' % producto_id
+    
+    cantidad = 1  
+
+    Carrito.agregar_producto(usuario_id, producto_id)
+    
+    usuario = Usuario.select_by_email(session['id'])
+
+    producto = Producto.get_by_id(producto_id)
+
+    usuario.ps += (producto.precio * cantidad) // 300
+    
+    session['carrito_items'] = Carrito.obtener_items(usuario_id)
+    
+    return redirect(url_for('productos'))
+@app.route('/carrito/confirmar', methods=['POST'])
+def confirmar_compra():
+    if 'username' in session:
+        usuario_id = session['id']
+        Carrito.vaciar_carrito(usuario_id)
+        
+        return redirect(url_for('mostrar_carrito'))
+    else:
+        return redirect(url_for('login'))
+    
+
+###################################
+#-------- RUTAS DEL LOGIN --------#
+###################################
+
 @app.route('/login-register')
 def cuenta():
     users = Usuario.get_all()
@@ -118,23 +197,6 @@ def register():
     password = bcrypt.generate_password_hash(password).decode("utf-8")
     user = Usuario.insert_one(nombre, ps, email, password, codigo_qr, "default.png")           
     return redirect(url_for('index'))
-
-    
-base_dir = os.path.abspath(os.path.dirname(__file__))
-qr_dir = os.path.join(base_dir, 'static', 'img', 'qr')
-def generate_qr_code(codigo_qr):
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(codigo_qr)
-    qr.make(fit=True)
-
-    img = qr.make_image(fill='black', back_color='white')
-    img_path = os.path.join(qr_dir, f'{codigo_qr}.png') 
-    img.save(img_path)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -186,45 +248,6 @@ def delete_session():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
-
-@app.route('/carrito/agregar', methods=['POST'])
-def agregar_al_carrito():
-    print(session) 
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    
-    usuario_id = session['id']
-    producto_id = request.form.get('producto_id')
-    try:
-        producto_id = int(producto_id)  
-    except ValueError:
-        return redirect(url_for('mostrar_carrito')) 
-    
-    cantidad = 1  
-
-    Carrito.agregar_producto(usuario_id, producto_id)
-    
-    usuario = Usuario.select_by_email(session['id'])
-
-    producto = Producto.get_by_id(producto_id)
-    print("producto", producto)
-    if not producto:
-        return redirect(url_for('mostrar_carrito'))  
-
-    usuario.ps += (producto.precio * cantidad) // 300
-    
-    session['carrito_items'] = Carrito.obtener_items(usuario_id)
-    
-    return redirect(url_for('mostrar_carrito'))
-@app.route('/carrito/confirmar', methods=['POST'])
-def confirmar_compra():
-    if 'username' in session:
-        usuario_id = session['id']
-        Carrito.vaciar_carrito(usuario_id)
-        
-        return redirect(url_for('mostrar_carrito'))
-    else:
-        return redirect(url_for('login'))
 
 app.secret_key = b'my_super_secret_key'
 
