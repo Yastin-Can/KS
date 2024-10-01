@@ -46,7 +46,7 @@
                         </div>
                         <div class="textx">
                             <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
-                            <h6 class="minus">{{ session['ps'] }}</h6>
+                            <h6 class="minus">{{user.ps }}</h6>
                         </div>
                     </button>
                     <button id="btn-carrito">
@@ -103,7 +103,7 @@
                                     <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                         id="corazon-2">
                                     {% if user %}
-                                    <h6 class="minus">{{ session['ps'] }}</h6>
+                                    <h6 class="minus">{{user.ps }}</h6>
                                     {% endif %}
                                 </div>
                             </button>
@@ -167,7 +167,7 @@
                                     <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                         id="corazon-2">
                                     {% if user %}
-                                    <h6 class="minus">{{ session['ps'] }}</h6>
+                                    <h6 class="minus">{{user.ps }}</h6>
                                     {% endif %}
                                 </div>
                             </button>
@@ -186,20 +186,31 @@
                         <p>EDITAR</p>
                     </div>
                 </div>
+                {% if session['carrito_items'] %}
                 <div class="navbar-centerr">
-                    <ul class="centrar-ul">
+                    <div class="centrar-ul">
                         <li>PRODUCTOS</li>
+                        {% for item in session['carrito_items'] %}
+                        <li>{{ item.nombre }} ({{ item.cantidad }}) - {{ item.precio * item.cantidad // 300 }}</li>
+                        <!-- aqui quiero mostrar los ps que dara el producto -->
+                        {% endfor %}
                         <li>
-                            <form action="" method="post">
+                            <form action="/carrito/confirmar" method="post">
+                                <p> Precio final:{{ session.precio_final }} - Total de ps {{ session.total_ps }}</p>
+                                <!--aqui quiero mostrar el precio final y el total de puntos que sumara con la compra-->
                                 <button type="submit" class="logout">
                                     <p>CONFIRMAR COMPRA</p>
                                 </button>
                             </form>
                         </li>
-                    </ul>
+                    </div>
                 </div>
+                {% else %}
+                <p>El carrito está vacío</p>
+                {% endif %} 
             </div>
         </div>
+    </div>
     </div>
 
     {% endif%}
@@ -231,7 +242,7 @@
                             <div class="textx">
                                 <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                     id="corazon-">
-                                <h6 class="minus">{{ session['ps'] }}</h6>
+                                <h6 class="minus">{{ user.ps }}</h6>
                             </div>
                         </button>
                     </div>
