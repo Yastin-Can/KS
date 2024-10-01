@@ -46,7 +46,7 @@
                         </div>
                         <div class="textx">
                             <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
-                            <h6 class="minus">{{ session['ps'] }}</h6>
+                            <h6 class="minus">{{user.ps }}</h6>
                         </div>
                     </button>
                     <button id="btn-carrito">
@@ -103,7 +103,7 @@
                                     <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                         id="corazon-2">
                                     {% if user %}
-                                    <h6 class="minus">{{ session['ps'] }}</h6>
+                                    <h6 class="minus">{{user.ps }}</h6>
                                     {% endif %}
                                 </div>
                             </button>
@@ -167,7 +167,7 @@
                                     <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                         id="corazon-2">
                                     {% if user %}
-                                    <h6 class="minus">{{ session['ps'] }}</h6>
+                                    <h6 class="minus">{{user.ps }}</h6>
                                     {% endif %}
                                 </div>
                             </button>
@@ -186,20 +186,31 @@
                         <p>EDITAR</p>
                     </div>
                 </div>
+                {% if session['carrito_items'] %}
                 <div class="navbar-centerr">
-                    <ul class="centrar-ul">
+                    <div class="centrar-ul">
                         <li>PRODUCTOS</li>
+                        {% for item in session['carrito_items'] %}
+                        <li>{{ item.nombre }} ({{ item.cantidad }}) - {{ item.precio * item.cantidad // 300 }}</li>
+                        <!-- aqui quiero mostrar los ps que dara el producto -->
+                        {% endfor %}
                         <li>
-                            <form action="" method="post">
+                            <form action="/carrito/confirmar" method="post">
+                                <p> Precio final:{{ session.precio_final }} - Total de ps {{ session.total_ps }}</p>
+                                <!--aqui quiero mostrar el precio final y el total de puntos que sumara con la compra-->
                                 <button type="submit" class="logout">
                                     <p>CONFIRMAR COMPRA</p>
                                 </button>
                             </form>
                         </li>
-                    </ul>
+                    </div>
                 </div>
+                {% else %}
+                <p>El carrito está vacío</p>
+                {% endif %} 
             </div>
         </div>
+    </div>
     </div>
 
     {% endif%}
@@ -231,7 +242,7 @@
                             <div class="textx">
                                 <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
                                     id="corazon-">
-                                <h6 class="minus">{{ session['ps'] }}</h6>
+                                <h6 class="minus">{{ user.ps }}</h6>
                             </div>
                         </button>
                     </div>
@@ -311,6 +322,24 @@
     <section>
         <h2 class="title">Preguntas frecuentes</h2>
         <div class="questions-container">
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Qué tipo de productos ofrecemos?</span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Nos preocupamos de lo que conmuses y por eso elegimos los mejores productos
+                        para nuestos clientes</span>
+                    <span class="respuesta">Ofrecemos una amplia variedad de productos saludables libres de sellos, para
+                        que no tengas que preocuparte por lo que consumes. Desde bebidas energéticas hasta snacks de
+                        todos los sabores que puedas imaginar. Nos aseguramos de que todo sea nutritivo y delicioso. Lo
+                        saludable también sabe bien. Si tienes más dudas, puedes consultarnos en nuestro correo: </span>
+                    <span class="respuesta"><a href="">info@kioscosaludable.com</a></span>
+                </p>
+            </div>
+
+
             <div class="question">
                 <button class="preguntas" onclick="toggleFAQ(this)">
                     <span>¿Cómo funciona el sistema de corazones en Kiosco Saludable?</span>
@@ -332,11 +361,159 @@
                         gratuitos o con descuento. En nuestra tienda, encontrarás una variedad de productos que puedes
                         canjear con los corazones que has acumulado.</span>
                     <span class="respuesta">2.- Descuentos: También puedes usar tus corazones para obtener descuentos en
-                        futuras productos. Aplica tus corazones al total de tu compra y disfruta de un ahorro
+                        futuras compras. Aplica tus corazones al total de tu compra y disfruta de un ahorro
                         instantáneo.</span>
                     <span class="respuesta lista"></span>
                 </p>
             </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Tienen opciones para personas con dietas especiales o alergias?</span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Sí, tenemos opciones para todos: vegetarianos, veganos, personas con
+                        alergias o quienes sigan dietas específicas. En Kiosco Saludable encontrarás productos ajustados
+                        a tus necesidades. Si tienes más preguntas sobre productos específicos, contáctanos en:</span>
+                    <span class="respuesta"><a href="">info@kioscosaludable.com</a> </span>
+
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Qué ocurre si un producto está agotado?</span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Si el producto que deseas está agotado, no te preocupes. Pronto estará
+                        disponible nuevamente, o te recomendaremos productos similares. Si ninguno te convence, nos
+                        aseguraremos de reponer tu favorito lo antes posible. Lo saludable también sabe bien, y queremos
+                        que siempre esté disponible para ti.</span>
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Realizan envíos a domicilio?</span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Actualmente, no realizamos envíos a domicilio. Todos nuestros productos se
+                        retiran directamente en las tiendas físicas de Kiosco Saludable.
+                    </span>
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Cuánto tiempo tarda en estar listo mi pedido?
+                    </span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">El tiempo de entrega es inmediato. Una vez que confirmes tu compra, podrás
+                        retirar tu producto al instante en la sucursal más cercana de Kiosco Saludable. Si tienes más
+                        dudas, contáctanos en:</span>
+                    <span class="respuesta"><a href="">info@kioscosaludable.com</a> </span>
+
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Puedo rastrear mi pedido?</span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">No es necesario rastrear tu pedido, ya que siempre estará disponible en la
+                        sucursal una vez confirmada la compra. Solo tienes que ir a retirarlo.</span>
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Ofrecen descuentos o promociones especiales?
+                    </span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Sí, ofrecemos descuentos exclusivos para estudiantes y también para quienes
+                        no lo son, a través de nuestros planes mensuales, semestrales y anuales, cada uno con beneficios
+                        únicos. Para más información sobre nuestros planes, haz <span><a href="">clic aquí</a></span>.
+                        Lo saludable también sabe
+                        bien y es accesible.</span>
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Cómo puedo registrarme en la plataforma?
+                    </span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Para registrarte, solo debes ir a la parte superior derecha de nuestra web y
+                        hacer clic en el botón "Registrarse". Llena los datos solicitados y listo, ¡ya eres parte de la
+                        comunidad de Kiosco Saludable! Si tienes alguna duda, puedes escribirnos a:</span>
+                    <span><a href="">info@kioscosaludable.com</a></span>
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Cómo puedo hacer un pedido?</span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Hacer un pedido en Kiosco Saludable es muy fácil. Solo ingresa a nuestra
+                        página, elige los productos que desees en la sección "Productos", agrégalos a tu carrito y
+                        confirma tu compra. Luego, podrás retirar tu pedido en cualquiera de nuestras sucursales. ¡Así
+                        de simple! No porque sea saludable tiene que ser complicado.</span>
+                </p>
+            </div>
+
+
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Puedo devolver o cambiar un producto?
+                    </span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Se aceptan devoluciones siempre y cuando el producto esté intacto. Sin
+                        embargo, en el caso de productos como bebidas (por ejemplo, jugos, batidos, y productos
+                        preparados), no se aceptan devoluciones debido a factores como la preparación personalizada y su
+                        exposición al ambiente. Para más detalles, consulta nuestro correo: </span>
+                    <span><a href="">info@kioscosaludable.com</a></span>
+                </p>
+            </div>
+            <div class="question">
+                <button class="preguntas" onclick="toggleFAQ(this)">
+                    <span>¿Cómo puedo contactarlos si tengo un problema con mi pedido?
+
+                    </span>
+                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
+                </button>
+                <p class="p">
+                    <span class="respuesta">Puedes contactarnos a través de nuestro correo: <span><a
+                                href="">info@kioscosaludable.com</a></span>.
+                        Estaremos encantados de ayudarte con cualquier problema o duda.</span>
+
+                </p>
+            </div>
+
+
+
         </div>
     </section>
     <div class="centrar">

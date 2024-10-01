@@ -58,6 +58,8 @@ class Carrito:
         results = connectToMySQL('kiosco_saludable').query_db(query, {"usuario_id": usuario_id})
         print("Resultado de la consulta SQL:", results)
         carrito_items = []
+        total_cantidad = 0
+        total_precio = 0
         for row in results:
             print("Fila:", row)
             item = {
@@ -68,8 +70,14 @@ class Carrito:
                 "producto_id": row['producto_id']
             }
             carrito_items.append(item)
-        return carrito_items
-    
+            total_cantidad += row['cantidad']
+            total_precio += row['total']
+        return {
+            "carrito_items": carrito_items,
+            "total_cantidad": total_cantidad,
+            "total_precio": total_precio
+        }
+
     @staticmethod
     def agregar_producto(usuario_id, producto_id):
         query = """
@@ -98,4 +106,4 @@ class Carrito:
         DELETE FROM carrito_items
         WHERE usuario_id = %(usuario_id)s;
         """
-        connectToMySQL('kiosco_saludable').query_db(query, {'ususario_id':usuario_id,})
+        connectToMySQL('kiosco_saludable').query_db(query, {'usuario_id':usuario_id,})
