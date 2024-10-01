@@ -906,8 +906,14 @@ input {
 }
 
 .fa-basket-shopping {
-    background-color: none;
+    background-color: none  ;
     font-size: 2vw;
+}
+#cantidad-carrito {
+    background-color: red;
+    margin-left: -1vw;
+    margin-top: -1vw;
+    border-radius: 100%;
 }
 #num-cant, #num-cantr, #num-cantrr {
     font-size: 1vw;
