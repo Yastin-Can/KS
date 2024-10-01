@@ -365,7 +365,7 @@ section {
     display: flex;
     align-items: center;
     margin-left: 15%;
-    margin-top: -5%;
+    margin-top: 3%;
     font-size: 1.5vw;
     font-weight: 2vw;
 }
@@ -387,6 +387,10 @@ section {
 
 .textx h6 {
     margin-top: 0.5vw;
+}
+
+.mi-product {
+    display: flex;
 }
 
 
