@@ -36,14 +36,23 @@ class Producto:
         for producto in results:
             productos.append(cls(producto))
         return productos
+
     @classmethod
     def get_by_id(cls, id):
-        query = "SELECT * FROM productos WHERE id = %s"
-        data = (id,)
-        result = connectToMySQL('kiosco_saludable').query_db(query, data)
+        print("ID:", id) 
+        id_int = int(id)  
+        query = "SELECT * FROM productos WHERE id = {}".format(id_int)
+        result = connectToMySQL('kiosco_saludable').query_db(query)
+        print(result)  
         if result:
             return cls(result[0])
         return None
+
+    @classmethod
+    def update_stock(cls, id, cantidad):
+        query = "UPDATE productos SET stock = stock - %s WHERE id = %s;"
+        data = (cantidad, id)
+        connectToMySQL('kiosco_saludable').query_db(query, data)
 
 
 class Categoria:

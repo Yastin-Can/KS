@@ -46,18 +46,25 @@ def productos():
     categorias = Categoria.get_all()
     productos = Producto.get_all()
     user = None
+
     if 'username' in session:
         username = session['username']
-        ps = session['ps']
-        usuario_id  = session['id']
-        qr = session['qr']
-        data = {"nombre": username, "ps": ps, "qr": qr}
-        user = Usuario.get_user_by_name(data)
+        usuario_id = session['id']
+        user = Usuario.get_user_by_name({"nombre": username})
         item = Carrito.get_by_user(usuario_id)
-        session['carrito_items'] = Carrito.obtener_items(usuario_id) 
+        carrito_info = Carrito.obtener_items(usuario_id)
+
+        session['carrito_items'] = carrito_info["carrito_items"]
+        session['precio_final'] = carrito_info["total_precio"]
+        session['total_ps'] = session['precio_final'] // 300
+
     else:
         session['carrito_items'] = []
-    return render_template('user-product.html', categorias=categorias, productos=productos, active_page='productos', user=user, item=item)    
+        session['precio_final'] = 0
+        session['total_ps'] = 0
+
+    return render_template('user-product.html', categorias=categorias, productos=productos, active_page='productos', user=user, item=item)
+
 @app.route('/productos/<int:categoria_id>')
 def productos_por_categoria(categoria_id):
     try:
@@ -112,43 +119,77 @@ def generate_qr_code(codigo_qr):
 #-------- RUTAS CARRITO ----------#
 ###################################
 
-
 @app.route('/carrito/agregar', methods=['POST'])
-
 def agregar_al_carrito():
+    producto_id = int(request.form.get('producto_id'))
+    producto = Producto.get_by_id(producto_id)
+    
+    if producto is None:
+        return 'Producto no encontrado', 404
+
     if 'username' not in session:
         return redirect(url_for('login'))
+
+    if producto.stock <= 0:
+        return 'Producto agotado', 400
     
-    usuario_id = session['id']
-    producto_id = request.form.get('producto_id')
     try:
-        producto_id = int(producto_id)  
+        usuario_id = session['id']
+        producto_id = int(request.form.get('producto_id'))
     except ValueError:
-        return 'Error: la id del producto es: %s' % producto_id
-    
+        return 'Error: la id del producto es inválida'
+
+    if producto_id <= 0:
+        return 'Error: la id del producto es inválida'
+
     cantidad = 1  
 
-    Carrito.agregar_producto(usuario_id, producto_id)
-    
-    usuario = Usuario.select_by_email(session['id'])
+    try:
+        Carrito.agregar_producto(usuario_id, producto_id)
+    except Exception as e:
+        return f'Error al agregar el producto al carrito: {str(e)}'
 
-    producto = Producto.get_by_id(producto_id)
-
-    usuario.ps += (producto.precio * cantidad) // 300
-    
-    session['carrito_items'] = Carrito.obtener_items(usuario_id)
+    carrito_info = Carrito.obtener_items(usuario_id)
+    session['carrito_items'] = carrito_info["carrito_items"]
+    session['precio_final'] = carrito_info["total_precio"]
+    session['total_ps'] = 0
+    for carrito_item in session['carrito_items']:
+        producto = Producto.get_by_id(carrito_item['producto_id'])
+        if producto is not None:
+            session['total_ps'] += (producto.precio * carrito_item['cantidad']) // 300
     
     return redirect(url_for('productos'))
+
 @app.route('/carrito/confirmar', methods=['POST'])
 def confirmar_compra():
     if 'username' in session:
         usuario_id = session['id']
+        carrito_items = Carrito.obtener_items(usuario_id)
+        
+        if 'carrito_items' not in session or len(session['carrito_items']) == 0:
+            return 'Carrito vacío', 400
+
+        for item in carrito_items:
+            if isinstance(item, dict) and 'producto_id' in item:
+                producto = Producto.get_by_id(item['producto_id'])
+                if producto is not None:
+                    Producto.update_stock(item['producto_id'], item['cantidad'])
+            else:
+                print(f"Error: item no es un diccionario o no contiene 'producto_id': {item}")
+
+        usuario = Usuario.get_user_by_name({"nombre": session['username']})
+
+        usuario.ps += int(session['total_ps'])
+
+        query = "UPDATE usuarios SET ps = %(ps)s WHERE id = %(id)s;"
+        data = {'ps': usuario.ps, 'id': usuario.id}
+        connectToMySQL('kiosco_saludable').query_db(query, data)
+
         Carrito.vaciar_carrito(usuario_id)
         
-        return redirect(url_for('mostrar_carrito'))
+        return redirect(url_for('productos'))
     else:
         return redirect(url_for('login'))
-    
 
 ###################################
 #-------- RUTAS DEL LOGIN --------#
