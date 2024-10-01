@@ -232,6 +232,26 @@ def confirmar_compra():
 #-------- RUTAS DEL LOGIN --------#
 ###################################
 
+
+@app.route('/planes', methods=['GET'])
+def planes():
+    user = None
+    ps = None
+    qr = None
+    if 'username' in session:
+        username = session['username']
+        ps = session['ps']
+        qr = session['qr']
+        data = {"nombre": username, "ps": ps, "qr": qr}
+        user = Usuario.get_user_by_name(data)
+    return render_template('plans-user.html', user=user)
+
+
+
+
+
+
+
 @app.route('/login-register')
 def cuenta():
     users = Usuario.get_all()
