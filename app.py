@@ -62,6 +62,7 @@ def productos():
         session['carrito_items'] = []
         session['precio_final'] = 0
         session['total_ps'] = 0
+        item = None
 
     return render_template('user-product.html', categorias=categorias, productos=productos, active_page='productos', user=user, item=item)
 
