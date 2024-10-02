@@ -1251,3 +1251,151 @@ input {
     }
 
 }
+
+/* ---------------- */
+/*                  */
+/* PANTALLA CELULAR */
+/*                  */
+/* ---------------- */
+
+.pricing-plans {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+}
+
+.plan-content {
+    font-family: 'Arial', sans-serif;
+    background-color: #021F47;
+    color: #ffffff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.plan-content h1 {
+    margin-bottom: 3vw;
+    font-size: 3vw;
+}
+
+.plans {
+    display: flex;
+    justify-content: center;
+    gap: 2vw;
+    margin: 0 auto;
+    padding: 2vw 0vw;
+    max-width: 120vw;
+}
+
+/* Estilos generales de las tarjetas */
+.plan {
+    background-color: #1e2247;
+    padding: 3vw;
+    border-radius: 15px;
+    width: 30%;
+    text-align: center;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+.price {
+    font-size: 1.8vw !important;
+}
+.plan:hover {
+    transform: translateY(-1vw);
+}
+
+.plan h2 {
+    color: #ffffff;
+    font-size: 24px;
+}
+
+.plan p {
+    color: #b0b3c6;
+    font-size: 1.5vw;
+}
+
+.plan .price {
+    font-size: 28px;
+    color: #ffffff;
+    margin: 2vw 0;
+}
+
+.plan .price span {
+    font-size: 3.6vw;
+    font-weight: bold;
+}
+
+.plan-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.plan-content ul li {
+    margin: 1vw 0;
+    color: #d1d1e0;
+}
+
+.plan-content a{
+    text-decoration: none;
+}
+
+.plan-button {
+    background-color: #5865f2;
+    color: #fff;
+    border: none;
+    padding: 1vw 2vw;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.plan-content button:hover {
+    background-color: #4755c7;
+}
+
+/* Plan Destacado */
+
+.plans .plan.popular, .plan.basic, .plan.premium {
+    width: 25vw;
+    max-width: 35vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.plans 
+.plan.popular p, li,    
+.plan.basic p, li, 
+.plan.premium p, li{
+    margin: 1vw 0vw;
+    list-style: inside;
+}
+
+.plan.popular {
+    border: 3px solid #40f2fe;
+    position: relative;
+}
+
+.plan.popular .most-popular {
+    position: absolute;
+    top: -15px;
+    right: 2vw;
+    background-color: #40f2fe;
+    color: #000;
+    padding: 5px 1vw;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+.main-plans{
+    background-color: #0d0f2a;
+    padding-top: 1vw;
+}
+
+/* Plan Premium */
+.plan.premium {
+    border: 3px solid #ffd700;
+}
