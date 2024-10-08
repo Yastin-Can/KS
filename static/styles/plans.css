@@ -301,3 +301,64 @@ button:hover {
 .container-contact-info p, a {
     font-size: 1.5vw;
 }
+
+
+/* Responsive adjustments */
+
+@media (max-width: 1200px) {
+    /* Adjust navbar for medium screens */
+    .navbar ul {
+        flex-wrap: wrap;
+    }
+
+    /* Shrink logo slightly */
+    .navbar .logo {
+        width: 120px;
+    }
+
+    /* Adjust text sizes */
+    .navbar h3, .navbar h6 {
+        font-size: 0.9rem;
+    }
+
+    /* Adjust plan cards for medium screens */
+    .plans {
+        flex-direction: column;
+    }
+
+    .plan {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Adjust for mobile view */
+    .navbar ul {
+        flex-direction: column;
+    }
+
+    /* Shrink logo and hide text */
+    .navbar .logo {
+        width: 90px;
+    }
+
+    /* Adjust slider size */
+    .slider img {
+        width: 100px;
+    }
+
+    /* Stack plans vertically */
+    .plans {
+        display: block;
+    }
+
+    .plan {
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+
+    .plan button {
+        font-size: 1rem;
+    }
+}
+
