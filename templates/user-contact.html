@@ -207,7 +207,7 @@
                 </div>
                 {% else %}
                 <p>El carrito está vacío</p>
-                {% endif %} 
+                {% endif %}
             </div>
         </div>
     </div>
@@ -516,32 +516,47 @@
 
         </div>
     </section>
+    
     <div class="centrar">
         <div class="wrapper">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
             <h2>Enviar comentarios</h2>
             <div id="error_message"></div>
-            <form id="myform" onsubmit="return false;">
+            <form id="myform" method="POST" action="/enviar_comentarios">
                 <div class="input_field">
-                    <input type="text" placeholder="Nombre" id="name">
+                    <input type="text" placeholder="Nombre" id="name" name="nombre" required>
                 </div>
                 <div class="input_field">
-                    <input type="email" placeholder="Email" id="email">
+                    <input type="email" placeholder="Email" id="email" name="email" required>
                 </div>
                 <div class="input_field">
-                    <input type="number" placeholder="Celular" id="phone">
+                    <input type="number" placeholder="Celular" id="phone" name="celular" required>
                 </div>
                 <div class="input_field">
-                    <input type="date" placeholder="Fecha" id="date">
+                    <input type="date" placeholder="Fecha" id="date" name="fecha" required>
                 </div>
                 <div class="input_field">
-                    <input type="time" placeholder="Nombre" id="time">
+                    <input type="time" placeholder="Hora" id="time" name="hora" required>
+                </div>
+                <div class="input_field">
+                    <input type="text" placeholder="Deja tu comentario" id="comentario" name="comentario" required>
                 </div>
                 <div class="btn">
-                    <input type="submit" value="ENVIAR" onclick="return validate();">
+                    <input type="submit" value="ENVIAR">
                 </div>
             </form>
         </div>
     </div>
+    
+    
 
 
     <footer class="footer">

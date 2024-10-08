@@ -4,76 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restrate/Inicia Sesión</title>
+    <title>Registrarse / Iniciar Sesión</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/login-register.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
 </head>
 
 <body>
-    <div class="salida">
+    <header class="salida">
         <a href="{{ url_for('index') }}">
             <button>Salir</button>
         </a>
-    </div>
+    </header>
 
-    <div class="container" id="main">
-        <div class="sing-up">
+    <main class="container" id="main">
+        <section class="auth-form sing-up">
+            {% if register_errors %}
             <ul>
                 {% for e in register_errors %}
                 <li>{{ e }}</li>
                 {% endfor %}
             </ul>
+            {% endif %}
             <form action="/register" method="POST">
                 <h1>Crear Cuenta</h1>
-                <input type="text" name="nombre" placeholder="Name" required="">
-                <input type="email" name="email" placeholder="Email" required="">
-                <input type="password" name="pswd" placeholder="Password" required="">
-                <input type="password" name="pswd2" placeholder="Confirma Contraseña" required="">
+                <input type="text" name="nombre" placeholder="Nombre" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="pswd" placeholder="Contraseña" required>
+                <input type="password" name="pswd2" placeholder="Confirma Contraseña" required>
                 <button type="submit">Registrar</button>
             </form>
+        </section>
 
-        </div>
-
-
-        <div class="sing-in">
+        <section class="auth-form sing-in">
+            {% if login_errors %}
             <ul>
                 {% for e in login_errors %}
                 <li>{{ e }}</li>
                 {% endfor %}
             </ul>
+            {% endif %}
             <form action="/login" method="POST">
                 <h1>Iniciar Sesión</h1>
-                <input type="email" name="email" placeholder="Email" required="">
-                <input type="password" name="pswd" placeholder="Password" required="">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="pswd" placeholder="Contraseña" required>
                 <button type="submit">Iniciar Sesión</button>
             </form>
-        </div>
+        </section>
+
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-left">
                     <h1>Bienvenido de Nuevo!</h1>
-                    <p>Te estabamos esperando ❤️</p>
-                    <button id="singIn">Iniciar Sesion</button>
+                    <p>Te estábamos esperando ❤️</p>
+                    <button id="singIn">Iniciar Sesión</button>
                 </div>
                 <div class="overlay-right">
-                    <h1>Hola Bienvenido!</h1>
-                    <p>Ingresa algunos datos para formar parte de nuestra
-                        increible comunidad ❤️</p>
-                    <button id="singUp">Registar</button>
+                    <h1>¡Hola, Bienvenido!</h1>
+                    <p>Ingresa algunos datos para formar parte de nuestra increíble comunidad ❤️</p>
+                    <button id="singUp">Registrar</button>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="salida">
-        <form action="/session-delete">
-            <button type="submit">BORRAR SESSION</button>
+    </main>
+
+    <footer class="salida">
+        <form action="/session-delete" method="POST">
+            <button class="borrar-sesion" type="submit">Borrar Sesión</button>
         </form>
-    </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
 </body>
-
-
-<script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
-
 
 </html>

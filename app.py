@@ -14,7 +14,8 @@ from models.user import Usuario
 from config.db import connectToMySQL
 from models.product import Producto, Categoria
 from models.carrito import Carrito
-
+from flask_mail import Mail , Message
+from flask import flash
 
 app = Flask(__name__, static_folder='./static')
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
@@ -26,6 +27,48 @@ bcrypt = Bcrypt(app)
 ###################################
 #-------- RUTAS SECCIONES --------#
 ###################################
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'infokioscosaludable@gmail.com'  # Cambia esto por tu correo
+app.config['MAIL_PASSWORD'] = 'KS12345678'        # Cambia esto por tu contraseña
+app.config['MAIL_DEFAULT_SENDER'] = 'infokioscosaludable@gmail.com'
+app.config['MAIL_USE_SSL'] = False
+
+
+mail = Mail(app)
+
+@app.route("/enviar_comentarios", methods=['POST'])
+def enviar_comentarios():
+    nombre = request.form['nombre']
+    email = request.form['email']
+    celular = request.form['celular']
+    fecha = request.form['fecha']
+    hora = request.form['hora']
+    comentario = request.form['comentario']
+
+    # Crear el mensaje de correo
+    msg = Message("Nuevo comentario del formulario", 
+                  recipients=["infokioscosaludable@gmail.com"])  # Cambia esto por el destinatario
+    msg.body = (f"Nombre: {nombre}\n"
+                f"Email: {email}\n"
+                f"Celular: {celular}\n"
+                f"Fecha: {fecha}\n"
+                f"Hora: {hora}\n"
+                f"Comentario: {comentario}")
+    
+    # Enviar el correo
+    try:
+        mail.send(msg)
+        flash('Comentario enviado correctamente!', 'success')
+    except Exception as e:
+        flash(f'Ocurrió un error: {e}', 'danger')
+
+    return redirect('/')
+
+
+
 
 
 @app.route('/')
@@ -124,6 +167,9 @@ def contact():
         
 
     return render_template('user-contact.html', user=user, item = item)
+
+
+
 
 
 
