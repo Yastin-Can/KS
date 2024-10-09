@@ -1274,6 +1274,18 @@ input {
         width: 100% !important;
         height: 60vw;
     }
+    .navbar h3, .navbar h6 {
+        font-size: 0.9rem;
+    }
+    .plan button {
+        font-size: 0.8rem;
+    }
+    .plan p {
+        font-size: 3vw !important;
+    }
+    .plan li {
+        font-size: 3vw;
+    }
 }
 
 /* ---------------- */
