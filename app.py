@@ -32,7 +32,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'infokioscosaludable@gmail.com'  # Cambia esto por tu correo
-app.config['MAIL_PASSWORD'] = 'KS12345678'        # Cambia esto por tu contraseña
+app.config['MAIL_PASSWORD'] = 'KS12345678.'        # Cambia esto por tu contraseña
 app.config['MAIL_DEFAULT_SENDER'] = 'infokioscosaludable@gmail.com'
 app.config['MAIL_USE_SSL'] = False
 
