@@ -14,7 +14,8 @@ from models.user import Usuario
 from config.db import connectToMySQL
 from models.product import Producto, Categoria
 from models.carrito import Carrito
-
+from flask_mail import Mail , Message
+from flask import flash
 
 app = Flask(__name__, static_folder='./static')
 app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
@@ -22,11 +23,56 @@ app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 bcrypt = Bcrypt(app)
 
 
+########################
+#----- FORMULARIO -----#
+########################
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'infokioscosaludable@gmail.com'  # Cambia esto por tu correo
+app.config['MAIL_PASSWORD'] = 'KS12345678.'        # Cambia esto por tu contraseña
+app.config['MAIL_DEFAULT_SENDER'] = 'infokioscosaludable@gmail.com'
+app.config['MAIL_USE_SSL'] = False
+
+
+mail = Mail(app)
+
+@app.route("/enviar_comentarios", methods=['POST'])
+def enviar_comentarios():
+    nombre = request.form['nombre']
+    email = request.form['email']
+    celular = request.form['celular']
+    fecha = request.form['fecha']
+    hora = request.form['hora']
+    comentario = request.form['comentario']
+
+    # Crear el mensaje de correo
+    msg = Message("Nuevo comentario del formulario", 
+                  recipients=["infokioscosaludable@gmail.com"])  # Cambia esto por el destinatario
+    msg.body = (f"Nombre: {nombre}\n"
+                f"Email: {email}\n"
+                f"Celular: {celular}\n"
+                f"Fecha: {fecha}\n"
+                f"Hora: {hora}\n"
+                f"Comentario: {comentario}")
+    
+    # Enviar el correo
+    try:
+        mail.send(msg)
+        print('el correo fue enviado')
+        flash('Comentario enviado correctamente!', 'success')
+    except Exception as e:
+        print('el correo fue enviado')
+        flash(f'Ocurrió un error: {e}', 'danger')
+
+    return redirect('/')
+
+
 
 ###################################
 #-------- RUTAS SECCIONES --------#
 ###################################
-
 
 @app.route('/')
 def index():
@@ -124,6 +170,9 @@ def contact():
         
 
     return render_template('user-contact.html', user=user, item = item)
+
+
+
 
 
 
@@ -232,6 +281,26 @@ def confirmar_compra():
 #-------- RUTAS DEL LOGIN --------#
 ###################################
 
+
+@app.route('/planes', methods=['GET'])
+def planes():
+    user = None
+    ps = None
+    qr = None
+    if 'username' in session:
+        username = session['username']
+        ps = session['ps']
+        qr = session['qr']
+        data = {"nombre": username, "ps": ps, "qr": qr}
+        user = Usuario.get_user_by_name(data)
+    return render_template('plans-user.html', user=user)
+
+
+
+
+
+
+
 @app.route('/login-register')
 def cuenta():
     users = Usuario.get_all()
@@ -326,40 +395,6 @@ def delete_session():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
-
-
-##########################
-#-------- PLANES --------#
-##########################
-
-
-@app.route('/planes', methods=['GET'])
-def planes():
-    user = None
-    ps = None
-    qr = None
-    session['carrito_items'] = []
-    session['precio_final'] = 0
-    session['total_ps'] = 0
-    item = None
-
-    if 'username' in session:
-        username = session['username']
-        usuario_id = session['id']
-
-        ps = session['ps']
-        qr = session['qr']
-
-        item = Carrito.get_by_user(usuario_id)
-        carrito_info = Carrito.obtener_items(usuario_id)
-
-        session['carrito_items'] = carrito_info["carrito_items"]
-        session['precio_final'] = carrito_info["total_precio"]
-        session['total_ps'] = session['precio_final'] // 300
-
-        data = {"nombre": username, "ps": ps, "qr": qr}
-        user = Usuario.get_user_by_name(data)
-    return render_template('plans-user.html', user=user, item = item)
 
 app.secret_key = b'my_super_secret_key'
 
