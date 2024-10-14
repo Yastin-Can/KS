@@ -23,10 +23,9 @@ app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 bcrypt = Bcrypt(app)
 
 
-
-###################################
-#-------- RUTAS SECCIONES --------#
-###################################
+########################
+#----- FORMULARIO -----#
+########################
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -69,6 +68,9 @@ def enviar_comentarios():
 
 
 
+###################################
+#-------- RUTAS SECCIONES --------#
+###################################
 
 
 @app.route('/')
