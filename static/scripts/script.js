@@ -190,3 +190,13 @@ function mostrarCategoria(categoriaId) {
         categoriaSeleccionada.style.display = 'block';
     }
 }
+
+function mostrarDescripcion(btn) {
+    var descripcionDiv = btn.nextElementSibling; // selecciona el div #descripcion-producto
+    descripcionDiv.style.display = 'block';
+}
+
+function cerrarDescripcion() {
+    var descripcionDiv = document.getElementById('descripcion-producto');
+    descripcionDiv.style.display = 'none';
+}

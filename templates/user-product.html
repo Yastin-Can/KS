@@ -323,12 +323,14 @@
                         {% for producto in productos if producto.categoria_id == categoria.id %}
                         <li class="column">
                             <div class="mi-product">
+                                <div class="imagen-producto">
+                                    <img class="el-producto"
+                                        src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
+                                        alt="{{ producto.nombre }}">
+                                </div>
                                 <div class="descrip-product">
                                     <button class="btn-ver" onclick="mostrarDescripcion(this)">Ver descripción</button>
                                 </div>
-                                <img class="el-producto"
-                                    src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
-                                    alt="{{ producto.nombre }}">
                                 </button>
                                 <div class="info-product">
                                     <p id="name-product">{{ producto.nombre }}</p>
