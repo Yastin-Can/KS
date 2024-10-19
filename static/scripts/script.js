@@ -190,13 +190,20 @@ function mostrarCategoria(categoriaId) {
         categoriaSeleccionada.style.display = 'block';
     }
 }
-
-function mostrarDescripcion(btn) {
-    var descripcionDiv = btn.nextElementSibling;
-    descripcionDiv.style.display = 'block';
+function mostrarDescripcion(button) {
+    const productoElement = button.closest('li');
+    const descripcionOverlay = productoElement.querySelector('.descripcion-overlay');
+    
+    descripcionOverlay.classList.add('active');
+    
+    descripcionOverlay.addEventListener('click', function(event) {
+        if (event.target === descripcionOverlay) {
+            cerrarDescripcion(descripcionOverlay);
+        }
+    });
 }
 
-function cerrarDescripcion() {
-    var descripcionDiv = document.getElementById('descripcion-producto');
-    descripcionDiv.style.display = 'none';
+function cerrarDescripcion(descripcionOverlay) {
+    // Oculta el overlay
+    descripcionOverlay.classList.remove('active');
 }

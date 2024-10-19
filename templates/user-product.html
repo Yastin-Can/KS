@@ -329,8 +329,7 @@
                                         alt="{{ producto.nombre }}">
                                 </div>
                                 <div class="descrip-product">
-                                    <button class="btn-ver" onclick="mostrarDescripcion(this)">Ver descripción</button>
-                                </div>
+                                    <button class="btn-ver" onclick="mostrarDescripcion(this)">Ver descripción</button>                                </div>
                                 </button>
                                 <div class="info-product">
                                     <p id="name-product">{{ producto.nombre }}</p>
@@ -349,11 +348,35 @@
                                 <img src="{{ url_for('static', filename='img/main/corazon.png') }}" id="corazon" alt="">
                                 </span> {{ producto.precio // 300 }}
                             </p>
-                            <div id="descripcion-producto">
-                                <img src="" alt=""> <!-- Aqui una imagen del producto seleccionado -->
-                                <p><!-- Aqui iria su respectiva descripcion --></p>
-                                <button onclick="cerrarDescripcion()">Cerrar descripcion</button>
+                            <div id="descripcion-producto" class="descripcion-overlay">
+                                <div class="descrip-content">
+                                    <button onclick="cerrarDescripcion(this.closest('.descripcion-overlay'))" class="btn-cerrar">&times;</button>
+                                    
+                                    <div class="this-product">
+                                        <img class="el-producto" id="lol"
+                                             src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
+                                             alt="{{ producto.nombre }}">
+                            
+                                        <div class="product-details">
+                                            <h2>{{ producto.nombre }}</h2>
+                                            <p>Precio: ${{ producto.precio }}</p>
+                                            <p>PS: {{ producto.precio // 300 }}</p>
+                                            <div class="quantity-control">
+                                                <button class="btn-cantidad" onclick="disminuirCantidad()">-</button>
+                                                <span id="cantidad">1</span> 
+                                                <button class="btn-cantidad" onclick="aumentarCantidad()">+</button>
+                                            </div>
+                            
+                                            <p>Total: <span id="total-precio">${{ producto.precio }}</span> (PS: <span id="total-ps">{{ producto.precio // 300 }}</span>)</p>
+                            
+                                            <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                        </div>
+                                    </div>
+                            
+                                    <p class="la-descripcion">{{ producto.descripcion }}</p>
+                                </div>
                             </div>
+                            
                         </li>
                         {% endfor %}
                     </ul>
