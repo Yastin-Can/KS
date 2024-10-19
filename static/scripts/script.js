@@ -192,7 +192,7 @@ function mostrarCategoria(categoriaId) {
 }
 
 function mostrarDescripcion(btn) {
-    var descripcionDiv = btn.nextElementSibling; // selecciona el div #descripcion-producto
+    var descripcionDiv = btn.nextElementSibling;
     descripcionDiv.style.display = 'block';
 }
 
