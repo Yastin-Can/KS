@@ -365,12 +365,12 @@
                                             <p>Precio: ${{ producto.precio }}</p>
                                             <p>PS: {{ producto.precio // 300 }}</p>
                                             <div class="quantity-control">
-                                                <button class="btn-cantidad" onclick="disminuirCantidad()">-</button>
-                                                <span id="cantidad">1</span>
-                                                <button class="btn-cantidad" onclick="aumentarCantidad()">+</button>
+                                                <button class="btn-cantidad" onclick="disminuirCantidad(this, '{{ producto.id }}')">-</button>
+                                                <span id="cantidad-{{ producto.id }}">1</span>
+                                                <button class="btn-cantidad" onclick="aumentarCantidad(this, '{{ producto.id }}')">+</button>
                                             </div>
-                                            <p>Total: <span id="total-precio">${{ producto.precio }}</span> (PS: <span
-                                                    id="total-ps">{{ producto.precio // 300 }}</span>)</p>
+                                            <p>Total: <span id="total-precio-{{ producto.id }}">${{ producto.precio }}</span> (PS: <span id="total-ps-{{ producto.id }}">{{ producto.precio // 300 }}</span>)</p>
+                                            
                                             <button class="btn-agregar-carrito">Agregar al carrito</button>
                                         </div>
                                     </div>

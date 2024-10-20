@@ -276,6 +276,23 @@ def confirmar_compra():
         return redirect(url_for('productos'))
     else:
         return redirect(url_for('login'))
+    
+@app.route('/carrito/update', methods=['POST'])
+def actualizar_carrito():
+    try:
+        data = request.get_json()
+        producto_id = data.get('producto_id')
+        cantidad = data.get('cantidad')
+        
+        if 'username' in session:
+            usuario_id = session['id']
+            Carrito.update_item(producto_id, cantidad)
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Usuario no autenticado.'}), 401
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 
 ###################################
 #-------- RUTAS DEL LOGIN --------#

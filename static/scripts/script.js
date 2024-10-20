@@ -190,6 +190,10 @@ function mostrarCategoria(categoriaId) {
         categoriaSeleccionada.style.display = 'block';
     }
 }
+
+/////////////////////////////
+//MOSTRAR/OCULTAR DECRIPCION
+/////////////////////////////
 function mostrarDescripcion(button) {
     const productoElement = button.closest('li');
     const descripcionOverlay = productoElement.querySelector('.descripcion-overlay');
@@ -206,4 +210,56 @@ function mostrarDescripcion(button) {
 function cerrarDescripcion(descripcionOverlay) {
     // Oculta el overlay
     descripcionOverlay.classList.remove('active');
+}
+
+///////////////////////////////
+//FUNCIONALIDAD QUITAR/AGREGAR
+///////////////////////////////
+
+function disminuirCantidad(btn, productoId) {
+    let cantidadElemento = document.getElementById('cantidad-' + productoId);
+    let cantidad = parseInt(cantidadElemento.textContent);
+    if (cantidad > 1) {
+        cantidad -= 1;
+        cantidadElemento.textContent = cantidad;
+        actualizarTotal(productoId, cantidad);
+    }
+}
+
+function aumentarCantidad(btn, productoId) {
+    let cantidadElemento = document.getElementById('cantidad-' + productoId);
+    let cantidad = parseInt(cantidadElemento.textContent);
+    cantidad += 1;
+    cantidadElemento.textContent = cantidad;
+    actualizarTotal(productoId, cantidad);
+}
+
+function actualizarTotal(productoId, cantidad) {
+    const precioPorUnidad = parseInt(document.getElementById('valor-product').textContent.replace('$', ''));
+    const totalPrecio = precioPorUnidad * cantidad;
+    const totalPS = Math.floor(totalPrecio / 300);
+    
+    document.getElementById('total-precio-' + productoId).textContent = '$' + totalPrecio;
+    document.getElementById('total-ps-' + productoId).textContent = totalPS;
+
+    // Aquí hacemos la solicitud AJAX para actualizar la cantidad en el carrito sin recargar la página.
+    fetch('/carrito/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            producto_id: productoId,
+            cantidad: cantidad
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Carrito actualizado con éxito.');
+        } else {
+            console.error('Error al actualizar el carrito.');
+        }
+    });
 }
