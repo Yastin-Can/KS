@@ -304,17 +304,32 @@ def planes():
     user = None
     ps = None
     qr = None
+    session['carrito_items'] = []
+    session['precio_final'] = 0
+    session['total_ps'] = 0
+    item = None
+
     if 'username' in session:
+        
         username = session['username']
+        usuario_id = session['id']
+
         ps = session['ps']
         qr = session['qr']
+
+        item = Carrito.get_by_user(usuario_id)
+        carrito_info = Carrito.obtener_items(usuario_id)
+
+        session['carrito_items'] = carrito_info["carrito_items"]
+        session['precio_final'] = carrito_info["total_precio"]
+        session['total_ps'] = session['precio_final'] // 300
+
         data = {"nombre": username, "ps": ps, "qr": qr}
+
         user = Usuario.get_user_by_name(data)
-    return render_template('plans-user.html', user=user)
+        
 
-
-
-
+    return render_template('plans-user.html', user=user, item=item)
 
 
 

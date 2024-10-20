@@ -195,12 +195,10 @@
                         <li>PRODUCTOS</li>
                         {% for item in session['carrito_items'] %}
                         <li>{{ item.nombre }} ({{ item.cantidad }}) - {{ item.precio * item.cantidad // 300 }}</li>
-                        <!-- aqui quiero mostrar los ps que dara el producto -->
                         {% endfor %}
                         <li>
                             <form action="/carrito/confirmar" method="post">
                                 <p> Precio final:{{ session.precio_final }} - Total de ps {{ session.total_ps }}</p>
-                                <!--aqui quiero mostrar el precio final y el total de puntos que sumara con la compra-->
                                 <button type="submit" class="logout">
                                     <p>CONFIRMAR COMPRA</p>
                                 </button>
@@ -210,7 +208,7 @@
                 </div>
                 {% else %}
                 <p>El carrito está vacío</p>
-                {% endif %}
+                {% endif %} 
             </div>
         </div>
     </div>
