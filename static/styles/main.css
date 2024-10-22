@@ -600,13 +600,25 @@ section {
 .container-2 {
     height: 30vw;
     width: 100%;
-    background-image: url(https://media-private.canva.com/eA4tA/MAGIsteA4tA/1/s.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJWF6QO3UH4PAAJ6Q%2F20240722%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240722T005450Z&X-Amz-Expires=96372&X-Amz-Signature=cf2831a4661a964a1174ace846db70d1bd26d234abac98c64ac27fe77ec25096&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Tue%2C%2023%20Jul%202024%2003%3A41%3A02%20GMT);
+    background-image: url(https://media-private.canva.com/eA4tA/MAGIsteA4tA/1/s2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJWF6QO3UH4PAAJ6Q%2F20241022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241022T035240Z&X-Amz-Expires=53828&X-Amz-Signature=c430a247a6804a80ec715510856943061f0be037f63d6f6590960acb523d68c2&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Tue%2C%2022%20Oct%202024%2018%3A49%3A48%20GMT);
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: center;
     padding-left: 10vw;
     padding-right: 2vw;
+}
+
+.minimini {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.minimini p {
+    margin-top: 1vw;
+    color: #fff;
+    font-size: 2em;
 }
 
 .container-2 * {
