@@ -37,7 +37,8 @@
                         onclick="activateLink('link-contact')">CONTACTANOS</a>
                 </li>
                 <li class="menu-container"></li>
-                <a id="link-plans" href="{{ url_for('planes') }}" onclick="activateLink('link-plans')">PLANES</a>
+                    <a id="link-plans" href="{{ url_for('planes') }}"
+                        onclick="activateLink('link-plans')">PLANES</a>
                 </li>
             </ul>
         </div>
@@ -196,13 +197,12 @@
                     <div class="centrar-ul">
                         <li>PRODUCTOS</li>
                         {% for item in session['carrito_items'] %}
-                        <li>{{ item.nombre }} ({{ item.cantidad }}) - {{ item.precio * item.cantidad // 300 }}</li>
-                        <!-- aqui quiero mostrar los ps que dara el producto -->
+                        <li>{{ item.nombre }}  ({{ item.cantidad }}) - {{ item.precio * item.cantidad // 300 }}</li>
+                        <!-- aqui quiero mostrar los ps que dara el producto --> 
                         {% endfor %}
                         <li>
                             <form action="/carrito/confirmar" method="post">
-                                <p> Precio final:{{ session.precio_final }} - Total de ps {{ session.total_ps }}</p>
-                                <!--aqui quiero mostrar el precio final y el total de puntos que sumara con la compra-->
+                                <p> Precio final:{{ session.precio_final }} - Total de ps {{ session.total_ps }}</p> <!--aqui quiero mostrar el precio final y el total de puntos que sumara con la compra--> 
                                 <button type="submit" class="logout">
                                     <p>CONFIRMAR COMPRA</p>
                                 </button>
@@ -308,7 +308,8 @@
     <div class="contenedor-categorias">
         <div class="categorias">
             {% for categoria in categorias %}
-            <a href="#" class="categoria" onclick="mostrarCategoria( '{{ categoria.id }}' );">{{ categoria.nombre }}</a>
+            <a href="#" class="categoria" onclick="mostrarCategoria('{{ categoria.id }}'); return false;">{{
+                categoria.nombre }}</a>
             {% endfor %}
         </div>
     </div>
@@ -323,14 +324,11 @@
                         {% for producto in productos if producto.categoria_id == categoria.id %}
                         <li class="column">
                             <div class="mi-product">
-                                <div class="imagen-producto">
-                                    <img class="el-producto"
-                                        src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
-                                        alt="{{ producto.nombre }}">
-                                </div>
-                                <div class="descrip-product">
-                                    <button class="btn-ver" onclick="mostrarDescripcion(this)">Ver descripción</button>
-                                </div>
+                                <button class="descrip-product"> ver descripcion </button>
+                                <img class="el-producto"
+                                    src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
+                                    alt="{{ producto.nombre }}">
+                                </button>
                                 <div class="info-product">
                                     <p id="name-product">{{ producto.nombre }}</p>
                                     <div class="precio">
@@ -348,34 +346,9 @@
                                 <img src="{{ url_for('static', filename='img/main/corazon.png') }}" id="corazon" alt="">
                                 </span> {{ producto.precio // 300 }}
                             </p>
-
-
-                            <!-- ESTO SE VERA AL DAR CLICK EN VER DESCRIPCION -->
-
-                            <div id="descripcion-producto" class="descripcion-overlay">
-                                <div class="descrip-content">
-                                    <button onclick="cerrarDescripcion(this.closest('.descripcion-overlay'))"
-                                        class="btn-cerrar">&times;</button>
-                                    <div class="this-product">
-                                        <img class="el-producto" id="lol"
-                                            src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
-                                            alt="{{ producto.nombre }}">
-                                        <div class="product-details">
-                                            <h2>{{ producto.nombre }}</h2>
-                                            <p>Precio: ${{ producto.precio }}</p>
-                                            <p>PS: {{ producto.precio // 300 }}</p>
-                                            <div class="quantity-control">
-                                                <button class="btn-cantidad" onclick="disminuirCantidad(this, '{{ producto.id }}')">-</button>
-                                                <span id="cantidad-{{ producto.id }}">1</span>
-                                                <button class="btn-cantidad" onclick="aumentarCantidad(this, '{{ producto.id }}')">+</button>
-                                            </div>
-                                            <p>Total: <span id="total-precio-{{ producto.id }}">${{ producto.precio }}</span> (PS: <span id="total-ps-{{ producto.id }}">{{ producto.precio // 300 }}</span>)</p>
-                                            
-                                            <button class="btn-agregar-carrito">Agregar al carrito</button>
-                                        </div>
-                                    </div>
-                                    <p class="la-descripcion">{{ producto.descripcion }}</p>
-                                </div>
+                            <div id="descripcion-producto">
+                                <img src="" alt=""> <!-- Aqui una imagen del producto seleccionado -->
+                                <p><!-- Aqui iria su respectiva descripcion --></p>
                             </div>
                         </li>
                         {% endfor %}
@@ -383,8 +356,8 @@
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 
 
     <!-- FIN NAV SUPERIOR  -->
