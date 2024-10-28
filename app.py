@@ -78,6 +78,8 @@ def enviar_comentarios():
 def index():
     num_imagenes = 1
     user = None
+    categorias = Categoria.get_all()
+    productos = Producto.get_all()
     session['carrito_items'] = []
     session['precio_final'] = 0
     session['total_ps'] = 0
@@ -98,10 +100,10 @@ def index():
         session['precio_final'] = carrito_info["total_precio"]
         session['total_ps'] = session['precio_final'] // 300
 
-        data = {"nombre": username, "ps": ps, "qr": qr}
+        data = {"nombre": username, "ps": ps, "qr": qr, 'usuario_id': usuario_id}
         user = Usuario.get_user_by_name(data)
 
-    return render_template('main-user.html', num_imagenes=num_imagenes, user=user)
+    return render_template('main-user.html', num_imagenes=num_imagenes, user=user, item = item, productos = productos, categorias = categorias)
        
 @app.route('/productos')
 def productos():
@@ -110,10 +112,13 @@ def productos():
     user = None
 
     if 'username' in session:
+
         username = session['username']
         usuario_id = session['id']
+
         user = Usuario.get_user_by_name({"nombre": username})
         item = Carrito.get_by_user(usuario_id)
+        
         carrito_info = Carrito.obtener_items(usuario_id)
 
         session['carrito_items'] = carrito_info["carrito_items"]

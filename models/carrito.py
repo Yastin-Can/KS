@@ -50,7 +50,7 @@ class Carrito:
         query = """
         SELECT productos.nombre, productos.precio, carrito_items.cantidad,
                (productos.precio * carrito_items.cantidad) AS total,
-               productos.id AS producto_id
+               productos.id AS producto_id, productos.ruta_imagen
         FROM carrito_items
         JOIN productos ON carrito_items.producto_id = productos.id
         WHERE carrito_items.usuario_id = %(usuario_id)s;
@@ -67,7 +67,8 @@ class Carrito:
                 "precio": row['precio'],
                 "cantidad": row['cantidad'],
                 "total": row['total'],
-                "producto_id": row['producto_id']
+                "producto_id": row['producto_id'],
+                "imagen": row['ruta_imagen']  
             }
             carrito_items.append(item)
             total_cantidad += row['cantidad']

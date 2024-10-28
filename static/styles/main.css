@@ -1064,6 +1064,14 @@ input {
     margin-right: 1vw;
 }
 
+.centrar-ull {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
 .centrar-ul a {
     font-size: 1vw;
 }
@@ -1104,6 +1112,55 @@ input {
 .fa-basket-shopping {
     background-color: none;
     font-size: 2vw;
+}
+
+.carrito-container {
+    max-height: 400px; /* Altura máxima del contenedor */
+    overflow-y: auto; /* Habilita el desplazamiento vertical */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+}
+
+.carContent {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+    margin: 10px 0; /* Espaciado entre los elementos */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #e0e0e0; /* Borde para cada producto */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.car-el-producto {
+    width: 80px; /* Ancho fijo para la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    margin-right: 15px; /* Espacio entre la imagen y la información */
+}
+
+.carInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.carInfo h3 {
+    margin: 0; /* Elimina márgenes por defecto */
+    font-size: 1.2em; /* Tamaño de fuente para el nombre del producto */
+    color: #ffffff; /* Color del texto */
+}
+
+.carInfo li {
+    list-style: none;
+    margin: 5px 0;
+    font-size: 0.9em;
+    color: #ffffff; 
+}
+
+.carrito-container::-webkit-scrollbar {
+    width: 8px; /* Ancho del scrollbar */
+}
+
+.carrito-container::-webkit-scrollbar-thumb {
+    background-color: #000;
 }
 
 #cantidad-carrito {
