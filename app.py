@@ -251,6 +251,33 @@ def agregar_al_carrito():
     
     return redirect(url_for('productos'))
 
+@app.route('/carrito/agregar_desde_descripcion', methods=['POST'])
+def agregar_desde_descripcion():
+    if 'username' not in session:
+        return jsonify({'success': False, 'error': 'No autorizado'}), 401
+
+    data = request.get_json()
+    producto_id = data.get('producto_id')
+    cantidad = data.get('cantidad', 1)  # Por defecto 1 si no se especifica
+    usuario_id = session['id']
+
+    try:
+        for _ in range(int(cantidad)):
+            Carrito.agregar_producto(usuario_id, producto_id)
+        
+        carrito_info = Carrito.obtener_items(usuario_id)
+        session['carrito_items'] = carrito_info["carrito_items"]
+        session['precio_final'] = carrito_info["total_precio"]
+        session['total_ps'] = carrito_info["total_precio"] // 300
+
+        return jsonify({
+            'success': True,
+            'total_items': carrito_info["total_cantidad"]
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+    
+
 @app.route('/carrito/confirmar', methods=['POST'])
 def confirmar_compra():
     if 'username' in session:

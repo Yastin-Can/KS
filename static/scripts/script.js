@@ -265,3 +265,60 @@ function actualizarInterfazCarrito(carrito) {
     if (precioFinalElement) precioFinalElement.textContent = '$' + carrito.total_precio;
     if (totalPsElement) totalPsElement.textContent = carrito.total_ps;
 }
+
+function cambiarCantidadDescripcion(productoId, cambio) {
+    let cantidadElement = document.getElementById('cantidad-descripcion-' + productoId);
+    let cantidad = parseInt(cantidadElement.textContent) + cambio;
+    if (cantidad < 1) cantidad = 1;
+    cantidadElement.textContent = cantidad;
+
+    actualizarTotalesDescripcion(productoId, cantidad);
+}
+
+function actualizarTotalesDescripcion(productoId, cantidad) {
+    let precioUnitario = parseFloat(document.getElementById('precio-unitario-' + productoId).textContent);
+    let psUnitario = parseInt(document.getElementById('ps-unitario-' + productoId).textContent);
+
+    let totalPrecio = precioUnitario * cantidad;
+    let totalPs = psUnitario * cantidad;
+
+    document.getElementById('total-precio-descripcion-' + productoId).textContent = totalPrecio.toFixed(2);
+    document.getElementById('total-ps-descripcion-' + productoId).textContent = totalPs;
+}
+
+function agregarAlCarritoDesdeDescripcion(productoId) {
+    let cantidad = parseInt(document.getElementById('cantidad-descripcion-' + productoId).textContent);
+    
+    fetch('/carrito/agregar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            producto_id: productoId,
+            cantidad: cantidad
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Producto agregado al carrito');
+            cerrarDescripcion(document.getElementById('descripcion-producto'));
+            // Actualizar el número en el icono del carrito si es necesario
+            actualizarNumeroCarrito(data.total_items);
+        } else {
+            alert('Error al agregar al carrito: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al agregar al carrito');
+    });
+}
+
+function actualizarNumeroCarrito(totalItems) {
+    let numeroCarrito = document.getElementById('num-cant');
+    if (numeroCarrito) {
+        numeroCarrito.textContent = totalItems;
+    }
+}

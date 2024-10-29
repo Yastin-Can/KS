@@ -351,39 +351,40 @@
 
 
                             <!-- ESTO SE VERA AL DAR CLICK EN VER DESCRIPCION -->
-
+                            
                             <div id="descripcion-producto" class="descripcion-overlay">
                                 <div class="descrip-content">
                                     <button onclick="cerrarDescripcion(this.closest('.descripcion-overlay'))"
-                                        class="btn-cerrar">&times;</button>
-                                    <div class="this-product">
-                                        <img class="el-producto" id="lol"
-                                            src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
-                                            alt="{{ producto.nombre }}">
-                                        <div class="product-details">
-                                            <h2>{{ producto.nombre }}</h2>
-                                            <p>Precio: ${{ producto.precio }}</p>
-                                            <p>PS: {{ producto.precio // 300 }}</p>
-                                            <div class="quantity-control">
-                                                <button class="btn-cantidad" onclick="disminuirCantidad(this, '{{ producto.id }}')">-</button>
-                                                <span id="cantidad-{{ producto.id }}">1</span>
-                                                <button class="btn-cantidad" onclick="aumentarCantidad(this, '{{ producto.id }}')">+</button>
-                                            </div>
-                                            <p>Total: <span id="total-precio-{{ producto.id }}">${{ producto.precio }}</span> (PS: <span id="total-ps-{{ producto.id }}">{{ producto.precio // 300 }}</span>)</p>
-                                            
-                                            <button class="btn-agregar-carrito">Agregar al carrito</button>
+                                    class="btn-cerrar">&times;
+                                </button>
+                                <div class="this-product">
+                                    <img class="el-producto" id="lol"
+                                    src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
+                                    alt="{{ producto.nombre }}">
+                                    <div class="product-details">
+                                        <h2>{{ producto.nombre }}</h2>
+                                        <p>Precio: $<span id="precio-unitario-{{ producto.id }}">{{ producto.precio }}</span></p>
+                                        <p>PS: <span id="ps-unitario-{{ producto.id }}">{{ producto.precio // 300 }}</span></p>
+                                        <div class="quantity-control">
+                                            <button class="btn-cantidad" onclick="cambiarCantidadDescripcion('{{ producto.id }}', -1)">-</button>
+                                            <span id="cantidad-descripcion-{{ producto.id }}">1</span>
+                                            <button class="btn-cantidad" onclick="cambiarCantidadDescripcion('{{ producto.id }}', 1)">+</button>
                                         </div>
+                                        <p>Total: $<span id="total-precio-descripcion-{{ producto.id }}">{{ producto.precio }}</span></p>
+                                        <p>Total PS: <span id="total-ps-descripcion-{{ producto.id }}">{{ producto.precio // 300 }}</span></p>
+                                        <button class="btn-agregar-carrito" onclick="agregarAlCarritoDesdeDescripcion('{{ producto.id }}')">Agregar al carrito</button>
                                     </div>
-                                    <p class="la-descripcion">{{ producto.descripcion }}</p>
                                 </div>
+                                <p class="la-descripcion">{{ producto.descripcion }}</p>
                             </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>
+</div>
     {% endfor %}
 
 
