@@ -253,9 +253,7 @@
           <div class="navbar-centerr">
             <div class="centrar-ull">
               <h2>PRODUCTOS</h2>
-              <!-- Cambié <li> por <h2> para mejorar la semántica -->
-              <div class="carrito-container">
-                <!-- Contenedor para el scrollbar -->
+                <div class="carrito-container">
                 {% for item in session['carrito_items'] %}
                 <div class="carContent">
                   <img
@@ -269,7 +267,13 @@
                       Precio por unidad: ${{ item.precio }} / Puntos por unidad:
                       {{ item.precio // 300 }}
                     </li>
-                    <li>Cantidad: {{ item.cantidad }}</li>
+                    <li>
+                      <div class="quantity-control">
+                        <button class="btn-cantidad" onclick="disminuirCantidad(this, '{{ item.id }}')">-</button>
+                        <span id="cantidad-{{ item.id }}">{{ item.cantidad }}</span>
+                        <button class="btn-cantidad" onclick="aumentarCantidad(this, '{{ item.id }}')">+</button>
+                    </div>
+                    </li>
                     <li>
                       Precio acumulado: ${{ item.precio * item.cantidad }}
                     </li>

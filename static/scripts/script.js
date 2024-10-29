@@ -235,31 +235,38 @@ function aumentarCantidad(btn, productoId) {
 }
 
 function actualizarTotal(productoId, cantidad) {
-    const precioPorUnidad = parseInt(document.getElementById('valor-product').textContent.replace('$', ''));
+    const precioPorUnidad = parseInt(document.getElementById('valor-product-' + productoId).textContent.replace('$', ''));
     const totalPrecio = precioPorUnidad * cantidad;
     const totalPS = Math.floor(totalPrecio / 300);
     
     document.getElementById('total-precio-' + productoId).textContent = '$' + totalPrecio;
     document.getElementById('total-ps-' + productoId).textContent = totalPS;
 
-    // Aquí hacemos la solicitud AJAX para actualizar la cantidad en el carrito sin recargar la página.
     fetch('/carrito/update', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token() }}'
+            'X-CSRFToken': '{{ csrf_token() }}'  // Asegúrate de que el CSRF token esté disponible
         },
         body: JSON.stringify({
             producto_id: productoId,
             cantidad: cantidad
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             console.log('Carrito actualizado con éxito.');
         } else {
-            console.error('Error al actualizar el carrito.');
+            console.error('Error al actualizar el carrito:', data.error);
         }
+    })
+    .catch(error => {
+        console.error('Hubo un problema con la solicitud fetch:', error);
     });
 }
