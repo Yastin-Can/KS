@@ -264,19 +264,20 @@
                   <div class="carInfo">
                     <h3>{{ item.nombre }}</h3>
                     <li>
-                      Precio por unidad:
+                      CLP:
                       <span id="precio-unitario-{{ item.producto_id }}"
                         >${{ item.precio }}</span
                       >
-                      / Puntos por unidad:
-                      <span id="puntos-unitario-{{ item.producto_id }}"
-                        >{{ item.precio // 300 }}</span
-                      >
+                    </li>
+                    <li>
+                      PS:
+                      <span id="precio-unitario-{{ item.producto_id }}"
+                      >{{ item.precio // 300}}</span>
                     </li>
                     <li>
                       <div class="quantity-control">
                         <button
-                          class="btn-cantidad"
+                          class="carbtn-cantidad"
                           onclick="disminuirCantidad(this, '{{ item.producto_id }}')"
                         >
                           -
@@ -285,40 +286,30 @@
                           >{{ item.cantidad }}</span
                         >
                         <button
-                          class="btn-cantidad"
+                          class="carbtn-cantidad"
                           onclick="aumentarCantidad(this, '{{ item.producto_id }}')"
                         >
                           +
                         </button>
                       </div>
                     </li>
-                    <li>
-                      Precio acumulado:
-                      <span id="precio-{{ item.producto_id }}"
-                        >${{ item.precio * item.cantidad }}</span
-                      >
-                    </li>
-                    <li>
-                      Puntos acumulados:
-                      <span id="puntos-{{ item.producto_id }}"
-                        >{{ item.precio * item.cantidad // 300 }}</span
-                      >
-                    </li>
                   </div>
                 </div>
                 {% endfor %}
               </div>
-              <li>
+              <div class="confirm">
                 <form action="/carrito/confirmar" method="post">
                   <div class="totales">
-                    <p>Precio final: <span id="precio-final">{{ session.precio_final }}</span></p>
+                    <p>Total CLP: $<span id="precio-final">{{ session.precio_final }}</span></p>
                     <p>Total PS: <span id="total-ps">{{ session.total_ps }}</span></p>
-                </div>
-                  <button type="submit" class="logout">
-                    <p>CONFIRMAR COMPRA</p>
-                  </button>
+                  </div>
+                  <div class="comprarr">
+                    <button type="submit" class="logout">
+                      <p>CONFIRMAR COMPRA</p>
+                    </button>
+                  </div>
                 </form>
-              </li>
+              </div>
             </div>
           </div>
           {% else %}

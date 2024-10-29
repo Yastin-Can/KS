@@ -138,14 +138,14 @@ section {
 
 #user-name {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    align-self: center !important;
+    text-align: center;
 }
 
 #user-name p {
     font-size: 1vw;
-    margin-top: 0.5vw;
-    margin-bottom: 0.5vw;
+    margin: 0.5vw;
 }
 
 .nav-superior {
@@ -207,7 +207,6 @@ section {
     align-items: center;
     justify-content: space-between;
     height: 80vw;
-    border-top: 1px solid #fff;
 }
 
 .navbar-centerr li {
@@ -500,6 +499,7 @@ section {
 .quantity-control {
     display: flex;
     align-items: center;
+    gap: 2vw;
     margin: 10px 0;
 }
 
@@ -518,6 +518,29 @@ section {
     justify-content: center;
     text-align: center;
     transition: background-color 0.3s ease, border-color 0.3s ease; 
+}
+
+.carbtn-cantidad {
+    background-color: #021127;
+    color: #fff;
+    border: 2px solid #fff; 
+    padding: 10px; 
+    font-size: clamp(16px, 3vw, 20px);
+    cursor: pointer;
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease; 
+}
+
+.carbtn-cantidad:hover {
+    background-color: #ffffff;
+    color: #021127;
+    border: 2px solid #0f183f; 
 }
 
 .btn-cantidad:hover {
@@ -1071,6 +1094,12 @@ input {
     margin-left: 1vw;
 }
 
+.centrar-ull h2 {
+    border-bottom: 2px solid  #f0f0ff;
+    width: 100%;
+    border-radius: 20px;
+    padding-bottom: 2vw;
+}
 .centrar-ul a {
     font-size: 1vw;
 }
@@ -1126,12 +1155,39 @@ input {
     align-items: center;
     margin: 10px 0;
     padding: 10px; 
-    border: 1px solid #e0e0e0;
-    border-radius: 5px; 
+    border: 2px solid #f0f0ff;
+    border-radius: 20px; 
+}
+
+.confirm * {
+    font-size: 1em;
+}
+.confirm {
+    border-top: 2px solid  #f0f0ff;
+    border-radius: 20px;
+    padding-top: 1vw;
+}
+
+.totales {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1vw;
+}
+
+.totales p {
+    font-size: 1.3em;
+}
+
+.comprarr {
+    width: 28em;
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
 }
 
 .car-el-producto {
-    width: 80px; 
+    width: 8VW; 
+    border-radius: 20px;
     height: auto; 
     margin-right: 15px; 
 }
