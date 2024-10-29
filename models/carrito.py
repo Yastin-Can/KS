@@ -62,12 +62,10 @@ class Carrito:
         WHERE carrito_items.usuario_id = %(usuario_id)s;
         """
         results = connectToMySQL('kiosco_saludable').query_db(query, {"usuario_id": usuario_id})
-        print("Resultado de la consulta SQL:", results)
         carrito_items = []
         total_cantidad = 0
         total_precio = 0
         for row in results:
-            print("Fila:", row)
             item = {
                 "nombre": row['nombre'],
                 "precio": row['precio'],

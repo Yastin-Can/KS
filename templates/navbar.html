@@ -1,0 +1,389 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <a href="{{ url_for('index') }}">
+      <img
+        src="{{ url_for('static', filename='img/main/logo.png') }}"
+        alt="Logo"
+        class="logo"
+      />
+    </a>
+  </div>
+  <div class="navbar-center">
+    <ul>
+      <li class="menu-container">
+        <a
+          id="link-index"
+          href="{{ url_for('index') }}"
+          onclick="activateLink('link-index')"
+          >INICIO</a
+        >
+      </li>
+      <li class="menu-container">
+        <a
+          id="link-product"
+          href="{{ url_for('productos') }}"
+          onclick="activateLink('link-product')"
+          >PIDE AQUI</a
+        >
+      </li>
+      <li class="menu-container">
+        <a
+          id="link-contact"
+          href="{{ url_for('contact') }}"
+          onclick="activateLink('link-contact')"
+          >CONTACTANOS</a
+        >
+      </li>
+      <li class="menu-container">
+        <a
+          id="link-plans"
+          href="{{ url_for('planes') }}"
+          onclick="activateLink('link-plans')"
+          >PLANES</a
+        >
+      </li>
+    </ul>
+  </div>
+  {% if user %}
+  <div class="navbar-right">
+    <div class="usuario">
+      <div id="perfil">
+        <button id="btn-perfil">
+          <div class="textt">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="textx">
+            <img
+              src="{{ url_for('static', filename='img/main/corazon.png') }}"
+              alt=""
+              id="corazon"
+            />
+            <h6 class="minus">{{ user.ps }}</h6>
+          </div>
+        </button>
+        <button id="btn-carrito">
+          <i class="fa-solid fa-basket-shopping"></i>
+          <div id="cantidad-carrito">
+            <p id="num-cant">2</p>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div id="user-name">
+      {% if user %}
+      <h3>{{ session['username'] }}</h3>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div class="navbar-right">
+    <div class="usuario">
+      <div id="perfil">
+        <div class="text">
+          <h3>GANA</h3>
+          <h6 class="minus">PUNTOS</h6>
+        </div>
+        <div>
+          <img
+            src="{{ url_for('static', filename='img/main/corazon.png') }}"
+            alt=""
+            id="corazon"
+          />
+        </div>
+        <div class="text">
+          <h3>UNETE</h3>
+          <h6 class="minus">AQUI</h6>
+        </div>
+      </div>
+      <div class="login">
+        <a href="{{ url_for('cuenta') }}"
+          ><button class="btnn">Registrarse</button></a
+        >
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</nav>
+
+{% if user%}
+<!-- Contenedor para el perfil del usuario -->
+<div id="menu-containerr" class="menu-container">
+  <div class="contentt" id="mobile-menu-2">
+    <div class="navbarr">
+      <div class="navbar-rightt">
+        <div class="usuario">
+          <div id="perfil">
+            <button id="btn-perfill">
+              <div class="textt">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div class="textx">
+                <img
+                  src="{{ url_for('static', filename='img/main/corazon.png') }}"
+                  alt=""
+                  id="corazon-2"
+                />
+                {% if user %}
+                <h6 class="minus">{{ user.ps }}</h6>
+                {% endif %}
+              </div>
+            </button>
+            <button id="btn-carritor">
+              <i class="fa-solid fa-basket-shopping"></i>
+              <div id="cantidad-carrito">
+                <p id="num-cantr">2</p>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div id="user-name">
+          {% if user %}
+          <h3>{{ session['username'] }}</h3>
+          {% endif %}
+          <p>EDITAR</p>
+        </div>
+      </div>
+      <div class="navbar-centerr">
+        <ul class="centrar-ul">
+          <li class="menu-container-">
+            <a href="{{ url_for('index') }}">INICIO</a>
+          </li>
+          <li class="menu-container-">
+            <a href="{{ url_for('productos') }}">PIDE AQUI</a>
+          </li>
+          <li class="menu-container-">
+            <a href="{{ url_for('contact') }}">CONTACTANOS</a>
+          </li>
+          <li>
+            <ul class="centrar-ul">
+              <li>
+                <p>AQUI TU CODIGO QR</p>
+              </li>
+              <li>
+                <a href="" id="codigo_qr">
+                  <img
+                    src="{{ url_for('static', filename='img/qr/' + session['qr'] + '.png') }}"
+                    alt="Código QR"
+                    id="qr"
+                  />
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <form action="{{ url_for('logout') }}" method="post">
+              <button type="submit" class="logout">
+                <p>Cerrar Sesion</p>
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contenedor para el carrito de productos -->
+<div id="menu-containerrr" class="menu-container">
+  <div class="contentt" id="mobile-menu-3">
+    <div class="navbarr">
+      <div class="navbar-rightt">
+        <div class="usuario">
+          <div id="perfil">
+            <button id="btn-perfillr">
+              <div class="textt">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div class="textx">
+                <img
+                  src="{{ url_for('static', filename='img/main/corazon.png') }}"
+                  alt=""
+                  id="corazon-2"
+                />
+                {% if user %}
+                <h6 class="minus">{{ user.ps }}</h6>
+                {% endif %}
+              </div>
+            </button>
+            <button id="btn-carritorr">
+              <i class="fa-solid fa-basket-shopping"></i>
+              <div id="cantidad-carrito">
+                <p id="num-cantrr">2</p>
+              </div>
+            </button>
+          </div>
+        </div>
+        <div id="user-name">
+          {% if user %}
+          <h3>{{ session['username'] }}</h3>
+          {% endif %}
+          <p>EDITAR</p>
+        </div>
+      </div>
+      {% if session['carrito_items'] %}
+      <div class="navbar-centerr">
+        <div class="centrar-ull">
+          <h2>PRODUCTOS</h2>
+          <div class="carrito-container">
+            {% for item in session['carrito_items'] %}
+            <div class="carContent">
+              <img
+                class="car-el-producto"
+                src="{{ url_for('static', filename='img/' + item.imagen | lower | replace(' ', '-')) }}"
+                alt="{{ item.nombre }}"
+              />
+              <div class="carInfo">
+                <h3>{{ item.nombre }}</h3>
+                <li>
+                  CLP:
+                  <span id="precio-unitario-{{ item.producto_id }}"
+                    >${{ item.precio }}</span
+                  >
+                </li>
+                <li>
+                  PS:
+                  <span id="precio-unitario-{{ item.producto_id }}"
+                    >{{ item.precio // 300}}</span
+                  >
+                </li>
+                <li>
+                  <div class="quantity-control">
+                    <button
+                      class="carbtn-cantidad"
+                      onclick="disminuirCantidad(this, '{{ item.producto_id }}')"
+                    >
+                      -
+                    </button>
+                    <span id="cantidad-{{ item.producto_id }}"
+                      >{{ item.cantidad }}</span
+                    >
+                    <button
+                      class="carbtn-cantidad"
+                      onclick="aumentarCantidad(this, '{{ item.producto_id }}')"
+                    >
+                      +
+                    </button>
+                  </div>
+                </li>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="confirm">
+            <form action="/carrito/confirmar" method="post">
+              <div class="totales">
+                <p>
+                  Total CLP: $<span id="precio-final"
+                    >{{ session.precio_final }}</span
+                  >
+                </p>
+                <p>
+                  Total PS: <span id="total-ps">{{ session.total_ps }}</span>
+                </p>
+              </div>
+              <div class="comprarr">
+                <button type="submit" class="logout">
+                  <p>CONFIRMAR COMPRA</p>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <p>El carrito está vacío</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endif%}
+
+<nav class="nav-superior" id="menu-mobile">
+  <div class="navbar-left-">
+    <a href="">
+      <img
+        src="{{ url_for('static', filename='img/main/logo.png') }}"
+        alt="Logo"
+        class="logo-"
+      />
+    </a>
+  </div>
+  <ion-icon
+    name="menu-outline"
+    class="toggle-button"
+    onclick="mostrar()"
+  ></ion-icon>
+</nav>
+
+{% block content %}{% endblock %}
+<div class="content" id="mobile-menu">
+  <div class="navbar-">
+    {% if user %}
+    <div class="navbar-right-">
+      <div class="usuario">
+        <div id="perfil">
+          <button onclick="perfil_usuario()" id="btn-perfil">
+            <div class="textt">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="textx">
+              <img
+                src="{{ url_for('static', filename='img/main/corazon.png') }}"
+                alt=""
+                id="corazon-"
+              />
+              <h6 class="minus">{{ user.ps }}</h6>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="user-name">
+      <h3>{{ session['username'] }}</h3>
+    </div>
+    {% else %}
+    <div class="navbar-">
+      <div class="parabajo">
+        <div class="usuario">
+          <div id="perfil">
+            <div class="text">
+              <h3>GANA</h3>
+              <h6 class="minus">PUNTOS</h6>
+            </div>
+            <div>
+              <img
+                src="{{ url_for('static', filename='img/main/corazon.png') }}"
+                alt=""
+                id="corazon"
+              />
+            </div>
+            <div class="text">
+              <h3>UNETE</h3>
+              <h6 class="minus">AQUI</h6>
+            </div>
+          </div>
+          <div class="login">
+            <a href="{{ url_for('cuenta') }}"
+              ><button class="btnn">Registrarse</button></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif%}
+  </div>
+  <div class="navbar-center-">
+    <ul>
+      <li class="menu-container-">
+        <a href="{{ url_for('index') }}">INICIO</a>
+      </li>
+      <li class="menu-container-">
+        <a href="{{ url_for('productos') }}">PIDE AQUI</a>
+      </li>
+      <li class="menu-container-">
+        <a href="{{ url_for('contact') }}">CONTACTANOS</a>
+      </li>
+    </ul>
+  </div>
+</div>

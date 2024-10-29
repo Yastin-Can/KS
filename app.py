@@ -1,7 +1,6 @@
 import sys
 import os
 import uuid
-from flask import Flask
 from flask_bcrypt import Bcrypt
 import qrcode
 

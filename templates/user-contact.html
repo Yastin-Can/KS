@@ -1,622 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Kiosco Saludable{% endblock %}</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-</head>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles/main.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+  </head>
 
-<body>
-
+  <body>
     <!-- NAV SUPERIOR -->
 
-    <nav class="navbar">
-        <div class="navbar-left">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='img/main/logo.png') }}" alt="Logo" class="logo">
-            </a>
-        </div>
-        <div class="navbar-center">
-            <ul>
-                <li class="menu-container">
-                    <a id="link-index" href="{{ url_for('index') }}" onclick="activateLink('link-index')">INICIO</a>
-                </li>
-                <li class="menu-container">
-                    <a id="link-product" href="{{ url_for('productos') }}" onclick="activateLink('link-product')">PIDE
-                        AQUI</a>
-                </li>
-                <li class="menu-container">
-                    <a id="link-contact" href="{{ url_for('contact') }}"
-                        onclick="activateLink('link-contact')">CONTACTANOS</a>
-                </li>
-                <li class="menu-container"></li>
-                    <a id="link-plans" href="{{ url_for('planes') }}"
-                        onclick="activateLink('link-plans')">PLANES</a>
-                </li>
-            </ul>
-        </div>
-        {% if user %}
-        <div class="navbar-right">
-            <div class="usuario">
-                <div id="perfil">
-                    <button id="btn-perfil">
-                        <div class="textt">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="textx">
-                            <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
-                            <h6 class="minus">{{user.ps }}</h6>
-                        </div>
-                    </button>
-                    <button id="btn-carrito">
-                        <i class="fa-solid fa-basket-shopping"></i>
-                        <div id="cantidad-carrito">
-                            <p id="num-cant">2</p>
-                        </div>
-                    </button>
-                </div>
-            </div>
-            <div id="user-name">
-                {% if user %}
-                <h3>{{ session['username'] }}</h3>
-                {% endif %}
-            </div>
-        </div>
-        {% else %}
-        <div class="navbar-right">
-            <div class="usuario">
-                <div id="perfil">
-                    <div class="text">
-                        <h3>GANA</h3>
-                        <h6 class="minus">PUNTOS</h6>
-                    </div>
-                    <div>
-                        <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
-                    </div>
-                    <div class="text">
-                        <h3>UNETE</h3>
-                        <h6 class="minus">AQUI</h6>
-                    </div>
-                </div>
-                <div class="login">
-                    <a href="{{ url_for('cuenta') }}"><button class="btnn">Registrarse</button></a>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    </nav>
-
-    {% if user%}
-    <!-- Contenedor para el perfil del usuario -->
-    <div id="menu-containerr" class="menu-container">
-        <div class="contentt" id="mobile-menu-2">
-            <div class="navbarr">
-                <div class="navbar-rightt">
-                    <div class="usuario">
-                        <div id="perfil">
-                            <button id="btn-perfill">
-                                <div class="textt">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
-                                <div class="textx">
-                                    <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
-                                        id="corazon-2">
-                                    {% if user %}
-                                    <h6 class="minus">{{user.ps }}</h6>
-                                    {% endif %}
-                                </div>
-                            </button>
-                            <button id="btn-carritor">
-                                <i class="fa-solid fa-basket-shopping"></i>
-                                <div id="cantidad-carrito">
-                                    <p id="num-cantr">2</p>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="user-name">
-                        {% if user %}
-                        <h3>{{ session['username'] }}</h3>
-                        {% endif %} <p>EDITAR</p>
-                    </div>
-                </div>
-                <div class="navbar-centerr">
-                    <ul class="centrar-ul">
-                        <li class="menu-container-"><a href="{{ url_for('index') }}">INICIO</a></li>
-                        <li class="menu-container-"><a href="{{ url_for('productos') }}">PIDE AQUI</a></li>
-                        <li class="menu-container-"><a href="{{ url_for('contact') }}">CONTACTANOS</a></li>
-                        <li>
-                            <ul class="centrar-ul">
-                                <li>
-                                    <p>AQUI TU CODIGO QR</p>
-                                </li>
-                                <li>
-                                    <a href="" id="codigo_qr">
-                                        <img src="{{ url_for('static', filename='img/qr/' + session['qr'] + '.png') }}"
-                                            alt="Código QR" id="qr">
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <form action="{{ url_for('logout') }}" method="post">
-                                <button type="submit" class="logout">
-                                    <p>Cerrar Sesion</p>
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Contenedor para el carrito de productos -->
-    <div id="menu-containerrr" class="menu-container">
-        <div class="contentt" id="mobile-menu-3">
-            <div class="navbarr">
-                <div class="navbar-rightt">
-                    <div class="usuario">
-                        <div id="perfil">
-                            <button id="btn-perfillr">
-                                <div class="textt">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
-                                <div class="textx">
-                                    <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
-                                        id="corazon-2">
-                                    {% if user %}
-                                    <h6 class="minus">{{user.ps }}</h6>
-                                    {% endif %}
-                                </div>
-                            </button>
-                            <button id="btn-carritorr">
-                                <i class="fa-solid fa-basket-shopping"></i>
-                                <div id="cantidad-carrito">
-                                    <p id="num-cantrr">2</p>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="user-name">
-                        {% if user %}
-                        <h3>{{ session['username'] }}</h3>
-                        {% endif %}
-                        <p>EDITAR</p>
-                    </div>
-                </div>
-                {% if session['carrito_items'] %}
-                <div class="navbar-centerr">
-                    <div class="centrar-ul">
-                        <li>PRODUCTOS</li>
-                        {% for item in session['carrito_items'] %}
-                        <li>{{ item.nombre }} ({{ item.cantidad }}) - {{ item.precio * item.cantidad // 300 }}</li>
-                        <!-- aqui quiero mostrar los ps que dara el producto -->
-                        {% endfor %}
-                        <li>
-                            <form action="/carrito/confirmar" method="post">
-                                <p> Precio final:{{ session.precio_final }} - Total de ps {{ session.total_ps }}</p>
-                                <!--aqui quiero mostrar el precio final y el total de puntos que sumara con la compra-->
-                                <button type="submit" class="logout">
-                                    <p>CONFIRMAR COMPRA</p>
-                                </button>
-                            </form>
-                        </li>
-                    </div>
-                </div>
-                {% else %}
-                <p>El carrito está vacío</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    </div>
-
-    {% endif%}
-
-
-
-
-    <nav class="nav-superior" id="menu-mobile">
-        <div class="navbar-left-">
-            <a href="">
-                <img src="{{ url_for('static', filename='img/main/logo.png') }}" alt="Logo" class="logo-">
-            </a>
-        </div>
-        <ion-icon name="menu-outline" class="toggle-button" onclick="mostrar()"></ion-icon>
-    </nav>
-
-
-    {% block content %}{% endblock %}
-    <div class="content" id="mobile-menu">
-        <div class="navbar-">
-            {% if user %}
-            <div class="navbar-right-">
-                <div class="usuario">
-                    <div id="perfil">
-                        <button onclick="perfil_usuario()" id="btn-perfil">
-                            <div class="textt">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <div class="textx">
-                                <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt=""
-                                    id="corazon-">
-                                <h6 class="minus">{{ user.ps }}</h6>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div id="user-name">
-                <h3>{{ session['username'] }}</h3>
-            </div>
-            {% else %}
-            <div class="navbar-">
-                <div class="parabajo">
-                    <div class="usuario">
-                        <div id="perfil">
-                            <div class="text">
-                                <h3>GANA</h3>
-                                <h6 class="minus">PUNTOS</h6>
-                            </div>
-                            <div>
-                                <img src="{{ url_for('static', filename='img/main/corazon.png') }}" alt="" id="corazon">
-                            </div>
-                            <div class="text">
-                                <h3>UNETE</h3>
-                                <h6 class="minus">AQUI</h6>
-                            </div>
-                        </div>
-                        <div class="login">
-                            <a href="{{ url_for('cuenta') }}"><button class="btnn">Registrarse</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endif%}
-        </div>
-        <div class="navbar-center-">
-            <ul>
-                <li class="menu-container-"><a href="{{ url_for('index') }}">INICIO</a></li>
-                <li class="menu-container-"><a href="{{ url_for('productos') }}">PIDE AQUI</a></li>
-                <li class="menu-container-"><a href="{{ url_for('contact') }}">CONTACTANOS</a></li>
-            </ul>
-        </div>
-    </div>
-
+    {% block nav %} {% include 'navbar.html' %} {% endblock %}
 
     <div class="slider">
-        <div class="slide-track">
-            {% for _ in range(14) %}
-            <div class="slide">
-                <img src="{{ url_for('static', filename='img/main/infinito.png') }}" alt="" id="slider">
-            </div>
-            {% endfor %}
+      <div class="slide-track">
+        {% for _ in range(14) %}
+        <div class="slide">
+          <img
+            src="{{ url_for('static', filename='img/main/infinito.png') }}"
+            alt=""
+            id="slider"
+          />
         </div>
+        {% endfor %}
+      </div>
     </div>
-
-
 
     <!-- FIN NAV SUPERIOR  -->
 
-
     <div class="container-contact">
-        <div class="centrar flex">
-            <h1>CONTACTA CON NOSOTROS</h1>
-            <img src="{{ url_for('static', filename='img/main/logotipo.png') }}" alt="" class="logotipo">
-        </div>
+      <div class="centrar flex">
+        <h1>CONTACTA CON NOSOTROS</h1>
+        <img
+          src="{{ url_for('static', filename='img/main/logotipo.png') }}"
+          alt=""
+          class="logotipo"
+        />
+      </div>
     </div>
 
     <div class="container-contact-info">
-        <div class="centrar">
-            <p>Nos encanta recibir de nuestros clientes todas sus dudas, comentarios y observaciones, que siempre son
-                bien recibidos. Nos ayudan a asegurarnos de que cada experiencia que tengas en Kiosco Saludable sea la
-                mejor de las posible. También puedes dejar siempre que quieras tus comentarios en nuestras redes
-                sociales:
-                <a href="">Facebook</a>, <a href="">instagram</a>, <a href="">Youtube</a> y <a href="">linkedin</a>.
-            </p>
-        </div>
+      <div class="centrar">
+        <p>
+          Nos encanta recibir de nuestros clientes todas sus dudas, comentarios
+          y observaciones, que siempre son bien recibidos. Nos ayudan a
+          asegurarnos de que cada experiencia que tengas en Kiosco Saludable sea
+          la mejor de las posible. También puedes dejar siempre que quieras tus
+          comentarios en nuestras redes sociales: <a href="">Facebook</a>,
+          <a href="">instagram</a>, <a href="">Youtube</a> y
+          <a href="">linkedin</a>.
+        </p>
+      </div>
     </div>
 
     <section>
-        <h2 class="title">Preguntas frecuentes</h2>
-        <div class="questions-container">
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Qué tipo de productos ofrecemos?</span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Nos preocupamos de lo que conmuses y por eso elegimos los mejores productos
-                        para nuestos clientes</span>
-                    <span class="respuesta">Ofrecemos una amplia variedad de productos saludables libres de sellos, para
-                        que no tengas que preocuparte por lo que consumes. Desde bebidas energéticas hasta snacks de
-                        todos los sabores que puedas imaginar. Nos aseguramos de que todo sea nutritivo y delicioso. Lo
-                        saludable también sabe bien. Si tienes más dudas, puedes consultarnos en nuestro correo: </span>
-                    <span class="respuesta"><a href="">info@kioscosaludable.com</a></span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Cómo funciona el sistema de corazones en Kiosco Saludable?</span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">En Kiosco Saludable, valoramos cada compra que haces con nosotros. Para
-                        recompensar tu
-                        lealtad,
-                        hemos implementado un sistema de corazones. A continuación, te explicamos cómo funciona:</span>
-                    <span class="respuesta lista">Acomular corazones:</span>
-                    <span class="respuesta">Cada vez que realices una compra en nuestro kiosco, acumularás corazones. La
-                        cantidad de
-                        corazones que recibas dependerá del valor de tu compra. Cuanto mayor sea el monto, más corazones
-                        ganarás.</span>
-                    <span class="respuesta lista">¿Que puedo hacer con mis corazones?</span>
-                    <span class="respuesta lista">Se pueden utilizar de dos maneras principales:</span>
-                    <span class="respuesta">1.- Canje de Productos: Puedes usar tus corazones para obtener productos
-                        gratuitos o con descuento. En nuestra tienda, encontrarás una variedad de productos que puedes
-                        canjear con los corazones que has acumulado.</span>
-                    <span class="respuesta">2.- Descuentos: También puedes usar tus corazones para obtener descuentos en
-                        futuras compras. Aplica tus corazones al total de tu compra y disfruta de un ahorro
-                        instantáneo.</span>
-                    <span class="respuesta lista"></span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Tienen opciones para personas con dietas especiales o alergias?</span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Sí, tenemos opciones para todos: vegetarianos, veganos, personas con
-                        alergias o quienes sigan dietas específicas. En Kiosco Saludable encontrarás productos ajustados
-                        a tus necesidades. Si tienes más preguntas sobre productos específicos, contáctanos en:</span>
-                    <span class="respuesta"><a href="">info@kioscosaludable.com</a> </span>
-
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Qué ocurre si un producto está agotado?</span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Si el producto que deseas está agotado, no te preocupes. Pronto estará
-                        disponible nuevamente, o te recomendaremos productos similares. Si ninguno te convence, nos
-                        aseguraremos de reponer tu favorito lo antes posible. Lo saludable también sabe bien, y queremos
-                        que siempre esté disponible para ti.</span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Realizan envíos a domicilio?</span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Actualmente, no realizamos envíos a domicilio. Todos nuestros productos se
-                        retiran directamente en las tiendas físicas de Kiosco Saludable.
-                    </span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Cuánto tiempo tarda en estar listo mi pedido?
-                    </span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">El tiempo de entrega es inmediato. Una vez que confirmes tu compra, podrás
-                        retirar tu producto al instante en la sucursal más cercana de Kiosco Saludable. Si tienes más
-                        dudas, contáctanos en:</span>
-                    <span class="respuesta"><a href="">info@kioscosaludable.com</a> </span>
-
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Puedo rastrear mi pedido?</span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">No es necesario rastrear tu pedido, ya que siempre estará disponible en la
-                        sucursal una vez confirmada la compra. Solo tienes que ir a retirarlo.</span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Ofrecen descuentos o promociones especiales?
-                    </span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Sí, ofrecemos descuentos exclusivos para estudiantes y también para quienes
-                        no lo son, a través de nuestros planes mensuales, semestrales y anuales, cada uno con beneficios
-                        únicos. Para más información sobre nuestros planes, haz <span><a href="">clic aquí</a></span>.
-                        Lo saludable también sabe
-                        bien y es accesible.</span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Cómo puedo registrarme en la plataforma?
-                    </span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Para registrarte, solo debes ir a la parte superior derecha de nuestra web y
-                        hacer clic en el botón "Registrarse". Llena los datos solicitados y listo, ¡ya eres parte de la
-                        comunidad de Kiosco Saludable! Si tienes alguna duda, puedes escribirnos a:</span>
-                    <span><a href="">info@kioscosaludable.com</a></span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Cómo puedo hacer un pedido?</span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Hacer un pedido en Kiosco Saludable es muy fácil. Solo ingresa a nuestra
-                        página, elige los productos que desees en la sección "Productos", agrégalos a tu carrito y
-                        confirma tu compra. Luego, podrás retirar tu pedido en cualquiera de nuestras sucursales. ¡Así
-                        de simple! No porque sea saludable tiene que ser complicado.</span>
-                </p>
-            </div>
-
-
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Puedo devolver o cambiar un producto?
-                    </span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Se aceptan devoluciones siempre y cuando el producto esté intacto. Sin
-                        embargo, en el caso de productos como bebidas (por ejemplo, jugos, batidos, y productos
-                        preparados), no se aceptan devoluciones debido a factores como la preparación personalizada y su
-                        exposición al ambiente. Para más detalles, consulta nuestro correo: </span>
-                    <span><a href="">info@kioscosaludable.com</a></span>
-                </p>
-            </div>
-            <div class="question">
-                <button class="preguntas" onclick="toggleFAQ(this)">
-                    <span>¿Cómo puedo contactarlos si tengo un problema con mi pedido?
-
-                    </span>
-                    <span><i class="fas fa-chevron-down d-arrow"></i></span>
-                </button>
-                <p class="p">
-                    <span class="respuesta">Puedes contactarnos a través de nuestro correo: <span><a
-                                href="">info@kioscosaludable.com</a></span>.
-                        Estaremos encantados de ayudarte con cualquier problema o duda.</span>
-
-                </p>
-            </div>
-
-
-
+      <h2 class="title">Preguntas frecuentes</h2>
+      <div class="questions-container">
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Qué tipo de productos ofrecemos?</span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Nos preocupamos de lo que conmuses y por eso elegimos los mejores
+              productos para nuestos clientes</span
+            >
+            <span class="respuesta"
+              >Ofrecemos una amplia variedad de productos saludables libres de
+              sellos, para que no tengas que preocuparte por lo que consumes.
+              Desde bebidas energéticas hasta snacks de todos los sabores que
+              puedas imaginar. Nos aseguramos de que todo sea nutritivo y
+              delicioso. Lo saludable también sabe bien. Si tienes más dudas,
+              puedes consultarnos en nuestro correo:
+            </span>
+            <span class="respuesta"
+              ><a href="">info@kioscosaludable.com</a></span
+            >
+          </p>
         </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span
+              >¿Cómo funciona el sistema de corazones en Kiosco Saludable?</span
+            >
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >En Kiosco Saludable, valoramos cada compra que haces con
+              nosotros. Para recompensar tu lealtad, hemos implementado un
+              sistema de corazones. A continuación, te explicamos cómo
+              funciona:</span
+            >
+            <span class="respuesta lista">Acomular corazones:</span>
+            <span class="respuesta"
+              >Cada vez que realices una compra en nuestro kiosco, acumularás
+              corazones. La cantidad de corazones que recibas dependerá del
+              valor de tu compra. Cuanto mayor sea el monto, más corazones
+              ganarás.</span
+            >
+            <span class="respuesta lista"
+              >¿Que puedo hacer con mis corazones?</span
+            >
+            <span class="respuesta lista"
+              >Se pueden utilizar de dos maneras principales:</span
+            >
+            <span class="respuesta"
+              >1.- Canje de Productos: Puedes usar tus corazones para obtener
+              productos gratuitos o con descuento. En nuestra tienda,
+              encontrarás una variedad de productos que puedes canjear con los
+              corazones que has acumulado.</span
+            >
+            <span class="respuesta"
+              >2.- Descuentos: También puedes usar tus corazones para obtener
+              descuentos en futuras compras. Aplica tus corazones al total de tu
+              compra y disfruta de un ahorro instantáneo.</span
+            >
+            <span class="respuesta lista"></span>
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span
+              >¿Tienen opciones para personas con dietas especiales o
+              alergias?</span
+            >
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Sí, tenemos opciones para todos: vegetarianos, veganos, personas
+              con alergias o quienes sigan dietas específicas. En Kiosco
+              Saludable encontrarás productos ajustados a tus necesidades. Si
+              tienes más preguntas sobre productos específicos, contáctanos
+              en:</span
+            >
+            <span class="respuesta"
+              ><a href="">info@kioscosaludable.com</a>
+            </span>
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Qué ocurre si un producto está agotado?</span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Si el producto que deseas está agotado, no te preocupes. Pronto
+              estará disponible nuevamente, o te recomendaremos productos
+              similares. Si ninguno te convence, nos aseguraremos de reponer tu
+              favorito lo antes posible. Lo saludable también sabe bien, y
+              queremos que siempre esté disponible para ti.</span
+            >
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Realizan envíos a domicilio?</span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Actualmente, no realizamos envíos a domicilio. Todos nuestros
+              productos se retiran directamente en las tiendas físicas de Kiosco
+              Saludable.
+            </span>
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Cuánto tiempo tarda en estar listo mi pedido? </span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >El tiempo de entrega es inmediato. Una vez que confirmes tu
+              compra, podrás retirar tu producto al instante en la sucursal más
+              cercana de Kiosco Saludable. Si tienes más dudas, contáctanos
+              en:</span
+            >
+            <span class="respuesta"
+              ><a href="">info@kioscosaludable.com</a>
+            </span>
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Puedo rastrear mi pedido?</span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >No es necesario rastrear tu pedido, ya que siempre estará
+              disponible en la sucursal una vez confirmada la compra. Solo
+              tienes que ir a retirarlo.</span
+            >
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Ofrecen descuentos o promociones especiales? </span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Sí, ofrecemos descuentos exclusivos para estudiantes y también
+              para quienes no lo son, a través de nuestros planes mensuales,
+              semestrales y anuales, cada uno con beneficios únicos. Para más
+              información sobre nuestros planes, haz
+              <span><a href="">clic aquí</a></span
+              >. Lo saludable también sabe bien y es accesible.</span
+            >
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Cómo puedo registrarme en la plataforma? </span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Para registrarte, solo debes ir a la parte superior derecha de
+              nuestra web y hacer clic en el botón "Registrarse". Llena los
+              datos solicitados y listo, ¡ya eres parte de la comunidad de
+              Kiosco Saludable! Si tienes alguna duda, puedes escribirnos
+              a:</span
+            >
+            <span><a href="">info@kioscosaludable.com</a></span>
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Cómo puedo hacer un pedido?</span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Hacer un pedido en Kiosco Saludable es muy fácil. Solo ingresa a
+              nuestra página, elige los productos que desees en la sección
+              "Productos", agrégalos a tu carrito y confirma tu compra. Luego,
+              podrás retirar tu pedido en cualquiera de nuestras sucursales.
+              ¡Así de simple! No porque sea saludable tiene que ser
+              complicado.</span
+            >
+          </p>
+        </div>
+
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span>¿Puedo devolver o cambiar un producto? </span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Se aceptan devoluciones siempre y cuando el producto esté
+              intacto. Sin embargo, en el caso de productos como bebidas (por
+              ejemplo, jugos, batidos, y productos preparados), no se aceptan
+              devoluciones debido a factores como la preparación personalizada y
+              su exposición al ambiente. Para más detalles, consulta nuestro
+              correo:
+            </span>
+            <span><a href="">info@kioscosaludable.com</a></span>
+          </p>
+        </div>
+        <div class="question">
+          <button class="preguntas" onclick="toggleFAQ(this)">
+            <span
+              >¿Cómo puedo contactarlos si tengo un problema con mi pedido?
+            </span>
+            <span><i class="fas fa-chevron-down d-arrow"></i></span>
+          </button>
+          <p class="p">
+            <span class="respuesta"
+              >Puedes contactarnos a través de nuestro correo:
+              <span><a href="">info@kioscosaludable.com</a></span
+              >. Estaremos encantados de ayudarte con cualquier problema o
+              duda.</span
+            >
+          </p>
+        </div>
+      </div>
     </section>
     <div class="centrar">
-        <div class="wrapper">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% for category, message in messages %}
-                        <li class="{{ category }}">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
-            <h2>Enviar comentarios</h2>
-            <div id="error_message"></div>
-            <form id="myform" method="POST" action="/enviar_comentarios">
-                <div class="input_field">
-                    <input type="text" placeholder="Nombre" id="name" name="nombre" required>
-                </div>
-                <div class="input_field">
-                    <input type="email" placeholder="Email" id="email" name="email" required>
-                </div>
-                <div class="input_field">
-                    <input type="number" placeholder="Celular" id="phone" name="celular" required>
-                </div>
-                <div class="input_field">
-                    <input type="date" placeholder="Fecha" id="date" name="fecha" required>
-                </div>
-                <div class="input_field">
-                    <input type="time" placeholder="Hora" id="time" name="hora" required>
-                </div>
-                <div class="input_field">
-                    <input type="text" placeholder="Deja tu comentario" id="comentario" name="comentario" required>
-                </div>
-                <div class="btn">
-                    <input type="submit" value="ENVIAR">
-                </div>
-            </form>
-        </div>
+      <div class="wrapper">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+        <h2>Enviar comentarios</h2>
+        <div id="error_message"></div>
+        <form id="myform" method="POST" action="/enviar_comentarios">
+          <div class="input_field">
+            <input
+              type="text"
+              placeholder="Nombre"
+              id="name"
+              name="nombre"
+              required
+            />
+          </div>
+          <div class="input_field">
+            <input
+              type="email"
+              placeholder="Email"
+              id="email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="input_field">
+            <input
+              type="number"
+              placeholder="Celular"
+              id="phone"
+              name="celular"
+              required
+            />
+          </div>
+          <div class="input_field">
+            <input
+              type="date"
+              placeholder="Fecha"
+              id="date"
+              name="fecha"
+              required
+            />
+          </div>
+          <div class="input_field">
+            <input
+              type="time"
+              placeholder="Hora"
+              id="time"
+              name="hora"
+              required
+            />
+          </div>
+          <div class="input_field">
+            <input
+              type="text"
+              placeholder="Deja tu comentario"
+              id="comentario"
+              name="comentario"
+              required
+            />
+          </div>
+          <div class="btn">
+            <input type="submit" value="ENVIAR" />
+          </div>
+        </form>
+      </div>
     </div>
-    
-    
-
 
     <footer class="footer">
-        <div class="container-5">
-            <div class="footer-row">
-                <div class="footer-link">
-                    <h4 id="informacion">Sobre nosotros</h4>
-                    <ul>
-                        <li><a href="">Nuestra hisotria</a></li>
-                        <li><a href="">Nuestra Mision</a></li>
-                        <li><a href="">Nuestros productos</a></li>
-                        <li><a href="">Trabaja con nosotros</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link">
-                    <h4 id="informacion">Impacto social</h4>
-                    <ul>
-                        <li><a href="">Sustentabilidad</a></li>
-                        <li><a href=""></a></li>
-                    </ul>
-                </div>
-                <div class="footer-link">
-                    <h4 id="informacion">Información</h4>
-                    <ul>
-                        <li><a href="">Contános</a></li>
-                        <li><a href="">Preguntas frecuentes</a></li>
-                    </ul>
-                </div>
-                <div class="footer-link">
-                    <h4 id="informacion">Siguenos</h4>
-                    <div class="redes">
-                        <a href=""><i class="fab fa-facebook-f"></i></a>
-                        <a href=""><i class="fab fa-instagram"></i></a>
-                        <a href=""><i class="fab fa-twitter"></i></a>
-                        <a href=""><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
+      <div class="container-5">
+        <div class="footer-row">
+          <div class="footer-link">
+            <h4 id="informacion">Sobre nosotros</h4>
+            <ul>
+              <li><a href="">Nuestra hisotria</a></li>
+              <li><a href="">Nuestra Mision</a></li>
+              <li><a href="">Nuestros productos</a></li>
+              <li><a href="">Trabaja con nosotros</a></li>
+            </ul>
+          </div>
+          <div class="footer-link">
+            <h4 id="informacion">Impacto social</h4>
+            <ul>
+              <li><a href="">Sustentabilidad</a></li>
+              <li><a href=""></a></li>
+            </ul>
+          </div>
+          <div class="footer-link">
+            <h4 id="informacion">Información</h4>
+            <ul>
+              <li><a href="">Contános</a></li>
+              <li><a href="">Preguntas frecuentes</a></li>
+            </ul>
+          </div>
+          <div class="footer-link">
+            <h4 id="informacion">Siguenos</h4>
+            <div class="redes">
+              <a href=""><i class="fab fa-facebook-f"></i></a>
+              <a href=""><i class="fab fa-instagram"></i></a>
+              <a href=""><i class="fab fa-twitter"></i></a>
+              <a href=""><i class="fab fa-linkedin"></i></a>
             </div>
+          </div>
         </div>
+      </div>
     </footer>
     <div class="derechos">
-        <p>TM © 2024 Kiosco Saludable Corporation. Todos los derechos reservados.</p>
+      <p>
+        TM © 2024 Kiosco Saludable Corporation. Todos los derechos reservados.
+      </p>
     </div>
-</body>
+  </body>
 
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 
+  <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
 
+  <script src="scripts/script.js"></script>
 
-
-<script src="{{ url_for('static', filename='script.js') }}"></script>
-
-<script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
-
-<script src="scripts/script.js"></script>
-
-
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
 </html>
