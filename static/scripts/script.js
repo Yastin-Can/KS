@@ -211,18 +211,12 @@ function cerrarDescripcion(descripcionOverlay) {
     // Oculta el overlay
     descripcionOverlay.classList.remove('active');
 }
-
-///////////////////////////////
-//FUNCIONALIDAD QUITAR/AGREGAR
-///////////////////////////////
-
 function disminuirCantidad(btn, productoId) {
     let cantidadElemento = document.getElementById('cantidad-' + productoId);
     let cantidad = parseInt(cantidadElemento.textContent);
     if (cantidad > 1) {
         cantidad -= 1;
-        cantidadElemento.textContent = cantidad;
-        actualizarTotal(productoId, cantidad);
+        actualizarCarrito(productoId, cantidad);
     }
 }
 
@@ -230,43 +224,44 @@ function aumentarCantidad(btn, productoId) {
     let cantidadElemento = document.getElementById('cantidad-' + productoId);
     let cantidad = parseInt(cantidadElemento.textContent);
     cantidad += 1;
-    cantidadElemento.textContent = cantidad;
-    actualizarTotal(productoId, cantidad);
+    actualizarCarrito(productoId, cantidad);
 }
 
-function actualizarTotal(productoId, cantidad) {
-    const precioPorUnidad = parseInt(document.getElementById('valor-product-' + productoId).textContent.replace('$', ''));
-    const totalPrecio = precioPorUnidad * cantidad;
-    const totalPS = Math.floor(totalPrecio / 300);
-    
-    document.getElementById('total-precio-' + productoId).textContent = '$' + totalPrecio;
-    document.getElementById('total-ps-' + productoId).textContent = totalPS;
-
-    fetch('/carrito/update', {
+function actualizarCarrito(productoId, cantidad) {
+    fetch('/carrito/actualizar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token() }}'  // Asegúrate de que el CSRF token esté disponible
         },
         body: JSON.stringify({
             producto_id: productoId,
             cantidad: cantidad
         })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
+        console.log('Datos recibidos del servidor:', data);  
         if (data.success) {
-            console.log('Carrito actualizado con éxito.');
-        } else {
-            console.error('Error al actualizar el carrito:', data.error);
+            actualizarInterfazCarrito(data.carrito);
         }
     })
-    .catch(error => {
-        console.error('Hubo un problema con la solicitud fetch:', error);
+    .catch(error => console.error('Error:', error));
+}
+
+function actualizarInterfazCarrito(carrito) {
+    carrito.items.forEach(item => {
+        let cantidadElement = document.getElementById('cantidad-' + item.producto_id);
+        let precioElement = document.getElementById('precio-' + item.producto_id);
+        let puntosElement = document.getElementById('puntos-' + item.producto_id);
+        
+        if (cantidadElement) cantidadElement.textContent = item.cantidad;
+        if (precioElement) precioElement.textContent = '$' + item.precio_total;
+        if (puntosElement) puntosElement.textContent = item.puntos;
     });
+
+    let precioFinalElement = document.getElementById('precio-final');
+    let totalPsElement = document.getElementById('total-ps');
+    
+    if (precioFinalElement) precioFinalElement.textContent = '$' + carrito.total_precio;
+    if (totalPsElement) totalPsElement.textContent = carrito.total_ps;
 }

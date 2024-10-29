@@ -282,21 +282,50 @@ def confirmar_compra():
     else:
         return redirect(url_for('login'))
     
-@app.route('/carrito/update', methods=['POST'])
+@app.route('/carrito/actualizar', methods=['POST'])
 def actualizar_carrito():
+    if 'username' not in session:
+        return jsonify({'success': False, 'error': 'No autorizado'}), 401
+
+    data = request.get_json()
+    producto_id = data.get('producto_id')
+    cantidad = data.get('cantidad')
+    usuario_id = session['id']
+
     try:
-        data = request.get_json()
-        producto_id = data.get('producto_id')
-        cantidad = data.get('cantidad')
+        # Actualizar cantidad en el carrito
+        Carrito.update_item(producto_id, cantidad)
         
-        if 'username' in session:
-            usuario_id = session['id']
-            Carrito.update_item(producto_id, cantidad)
-            return jsonify({'success': True})
-        else:
-            return jsonify({'success': False, 'error': 'Usuario no autenticado.'}), 401
+        # Obtener información actualizada del carrito
+        carrito_info = Carrito.obtener_items(usuario_id)
+        
+        # Actualizar la sesión
+        session['carrito_items'] = carrito_info["carrito_items"]
+        session['precio_final'] = carrito_info["total_precio"]
+        session['total_ps'] = carrito_info["total_precio"] // 300
+
+        # Preparar los datos para enviar al cliente
+        items_actualizados = []
+        for item in carrito_info["carrito_items"]:
+            items_actualizados.append({
+                'producto_id': item['producto_id'],
+                'cantidad': item['cantidad'],
+                'precio_total': item['total'],
+                'puntos': item['total'] // 300
+            })
+
+        return jsonify({
+            'success': True,
+            'carrito': {
+                'items': items_actualizados,
+                'total_precio': carrito_info["total_precio"],
+                'total_ps': carrito_info["total_precio"] // 300
+            }
+        })
+
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 
 ###################################

@@ -253,7 +253,7 @@
           <div class="navbar-centerr">
             <div class="centrar-ull">
               <h2>PRODUCTOS</h2>
-                <div class="carrito-container">
+              <div class="carrito-container">
                 {% for item in session['carrito_items'] %}
                 <div class="carContent">
                   <img
@@ -264,22 +264,45 @@
                   <div class="carInfo">
                     <h3>{{ item.nombre }}</h3>
                     <li>
-                      Precio por unidad: ${{ item.precio }} / Puntos por unidad:
-                      {{ item.precio // 300 }}
+                      Precio por unidad:
+                      <span id="precio-unitario-{{ item.producto_id }}"
+                        >${{ item.precio }}</span
+                      >
+                      / Puntos por unidad:
+                      <span id="puntos-unitario-{{ item.producto_id }}"
+                        >{{ item.precio // 300 }}</span
+                      >
                     </li>
                     <li>
                       <div class="quantity-control">
-                        <button class="btn-cantidad" onclick="disminuirCantidad(this, '{{ item.id }}')">-</button>
-                        <span id="cantidad-{{ item.id }}">{{ item.cantidad }}</span>
-                        <button class="btn-cantidad" onclick="aumentarCantidad(this, '{{ item.id }}')">+</button>
-                    </div>
+                        <button
+                          class="btn-cantidad"
+                          onclick="disminuirCantidad(this, '{{ item.producto_id }}')"
+                        >
+                          -
+                        </button>
+                        <span id="cantidad-{{ item.producto_id }}"
+                          >{{ item.cantidad }}</span
+                        >
+                        <button
+                          class="btn-cantidad"
+                          onclick="aumentarCantidad(this, '{{ item.producto_id }}')"
+                        >
+                          +
+                        </button>
+                      </div>
                     </li>
                     <li>
-                      Precio acumulado: ${{ item.precio * item.cantidad }}
+                      Precio acumulado:
+                      <span id="precio-{{ item.producto_id }}"
+                        >${{ item.precio * item.cantidad }}</span
+                      >
                     </li>
                     <li>
-                      Puntos acumulados: {{ item.precio * item.cantidad // 300
-                      }}
+                      Puntos acumulados:
+                      <span id="puntos-{{ item.producto_id }}"
+                        >{{ item.precio * item.cantidad // 300 }}</span
+                      >
                     </li>
                   </div>
                 </div>
@@ -287,10 +310,10 @@
               </div>
               <li>
                 <form action="/carrito/confirmar" method="post">
-                  <p>
-                    Precio final: ${{ session.precio_final }} - Total de ps {{
-                    session.total_ps }}
-                  </p>
+                  <div class="totales">
+                    <p>Precio final: <span id="precio-final">{{ session.precio_final }}</span></p>
+                    <p>Total PS: <span id="total-ps">{{ session.total_ps }}</span></p>
+                </div>
                   <button type="submit" class="logout">
                     <p>CONFIRMAR COMPRA</p>
                   </button>

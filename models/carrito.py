@@ -32,11 +32,17 @@ class Carrito:
         return result
 
     @classmethod
-    def update_item(cls, id, cantidad):
-        query = "UPDATE carrito_items SET cantidad = %(cantidad)s WHERE id = %(id)s;"
-        data = {'cantidad':cantidad, 'id':id}
-        result = connectToMySQL('kiosco_saludable').query_db(query, data)
-        return result
+    def update_item(cls, producto_id, cantidad):
+        query = """
+            UPDATE carrito_items 
+            SET cantidad = %(cantidad)s 
+            WHERE producto_id = %(producto_id)s
+        """
+        data = {
+            'cantidad': cantidad,
+            'producto_id': producto_id
+        }
+        return connectToMySQL('kiosco_saludable').query_db(query, data)
 
     @classmethod
     def delete_item(cls, id):
