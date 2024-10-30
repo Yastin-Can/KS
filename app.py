@@ -87,7 +87,9 @@ def index():
     if 'username' in session:
 
         username = session['username']
-        usuario_id = session['id']
+        usuario_id = session.get('id', None)
+        if usuario_id is None:
+            return redirect(url_for('login'))
 
         ps = session['ps']
         qr = session['qr']
@@ -435,7 +437,7 @@ def register():
     session["qr"] = url_for('static', filename=f'img/qr/{codigo_qr}.png')    
     password = bcrypt.generate_password_hash(password).decode("utf-8")
     user = Usuario.insert_one(nombre, ps, email, password, codigo_qr, "default.png")           
-    return redirect(url_for('index'))
+    return redirect(url_for('index', user = user))
 
 
 @app.route('/login', methods=['GET', 'POST'])
