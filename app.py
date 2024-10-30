@@ -213,44 +213,47 @@ def generate_qr_code(codigo_qr):
 
 @app.route('/carrito/agregar', methods=['POST'])
 def agregar_al_carrito():
-    producto_id = int(request.form.get('producto_id'))
-    producto = Producto.get_by_id(producto_id)
-    
-    if producto is None:
-        return 'Producto no encontrado', 404
+    if request.is_json:
+        if 'username' not in session:
+            return jsonify({'success': False, 'error': 'No autorizado'}), 401
 
-    if 'username' not in session:
-        return redirect(url_for('login'))
-
-    if producto.stock <= 0:
-        return 'Producto agotado', 400
-    
-    try:
+        data = request.get_json()
+        producto_id = data.get('producto_id')
+        cantidad = data.get('cantidad', 1)
         usuario_id = session['id']
-        producto_id = int(request.form.get('producto_id'))
-    except ValueError:
-        return 'Error: la id del producto es inválida'
-
-    if producto_id <= 0:
-        return 'Error: la id del producto es inválida'
-
-    cantidad = 1  
+    else:
+        if 'username' not in session:
+            return redirect(url_for('login'))
+            
+        producto_id = request.form.get('producto_id')
+        cantidad = 1
+        usuario_id = session['id']
 
     try:
-        Carrito.agregar_producto(usuario_id, producto_id)
-    except Exception as e:
-        return f'Error al agregar el producto al carrito: {str(e)}'
+        for _ in range(int(cantidad)):
+            Carrito.agregar_producto(usuario_id, producto_id)
+        
+        carrito_info = Carrito.obtener_items(usuario_id)
+        session['carrito_items'] = carrito_info["carrito_items"]
+        session['precio_final'] = carrito_info["total_precio"]
+        session['total_ps'] = carrito_info["total_precio"] // 300
 
-    carrito_info = Carrito.obtener_items(usuario_id)
-    session['carrito_items'] = carrito_info["carrito_items"]
-    session['precio_final'] = carrito_info["total_precio"]
-    session['total_ps'] = 0
-    for carrito_item in session['carrito_items']:
-        producto = Producto.get_by_id(carrito_item['producto_id'])
-        if producto is not None:
-            session['total_ps'] += (producto.precio * carrito_item['cantidad']) // 300
-    
-    return redirect(url_for('productos'))
+        if request.is_json:
+            total_items = sum(item['cantidad'] for item in session['carrito_items'])
+            return jsonify({
+                'success': True,
+                'total_items': total_items,
+                'precio_final': session['precio_final'],
+                'total_ps': session['total_ps']
+            })
+        else:
+            return redirect(url_for('productos'))
+
+    except Exception as e:
+        if request.is_json:
+            return jsonify({'success': False, 'error': str(e)}), 500
+        else:
+            return redirect(url_for('productos'))
 
 @app.route('/carrito/agregar_desde_descripcion', methods=['POST'])
 def agregar_desde_descripcion():

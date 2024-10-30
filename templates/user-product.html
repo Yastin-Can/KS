@@ -89,7 +89,7 @@
                                     class="btn-cerrar">&times;
                                 </button>
                                 <div class="this-product">
-                                    <img class="car-el-producto" id="lol"
+                                    <img class="el-producto" id="lol"
                                     src="{{ url_for('static', filename='img/' + producto.imagen | lower | replace(' ', '-')) }}"
                                     alt="{{ producto.nombre }}">
                                     <div class="product-details">
@@ -97,15 +97,16 @@
                                         <p>Precio: $<span id="precio-unitario-{{ producto.id }}">{{ producto.precio }}</span></p>
                                         <p>PS: <span id="ps-unitario-{{ producto.id }}">{{ producto.precio // 300 }}</span></p>
                                         <div class="quantity-control">
-                                            <button class="btn-cantidad" onclick="cambiarCantidadDescripcion('{{ producto.id }}', -1)">-</button>
+                                            <button class="btn-cantidad" onclick="DescripcionCarrito.cambiarCantidad('{{ producto.id }}', -1)">-</button>
                                             <span id="cantidad-descripcion-{{ producto.id }}">1</span>
-                                            <button class="btn-cantidad" onclick="cambiarCantidadDescripcion('{{ producto.id }}', 1)">+</button>
+                                            <button class="btn-cantidad" onclick="DescripcionCarrito.cambiarCantidad('{{ producto.id }}', 1)">+</button>
                                         </div>
                                         <p>Total: $<span id="total-precio-descripcion-{{ producto.id }}">{{ producto.precio }}</span></p>
                                         <p>Total PS: <span id="total-ps-descripcion-{{ producto.id }}">{{ producto.precio // 300 }}</span></p>
-                                        <button class="btn-agregar-carrito" onclick="agregarAlCarritoDesdeDescripcion('{{ producto.id }}')">Agregar al carrito</button>
+                                        <button class="btn-agregar-carrito" onclick="DescripcionCarrito.agregarAlCarrito('{{ producto.id }}')">
+                                            Agregar al carrito
+                                        </button>                                    </div>
                                     </div>
-                                </div>
                                 <p class="la-descripcion">{{ producto.descripcion }}</p>
                             </div>
                         </div>
@@ -169,6 +170,7 @@
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 
 <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+<script src="{{ url_for('static', filename='scripts/descrip.js') }}"></script>
 
 <script src="scripts/script.js"></script>
 
