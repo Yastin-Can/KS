@@ -515,10 +515,6 @@ def delete_session():
     session.clear()
     return redirect(url_for('index'))
     
-@app.route('/logout', methods=['POST'])
-def logout():
-    session.pop('username', None)
-    return redirect(url_for('index'))
 
 app.secret_key = b'my_super_secret_key'
 
