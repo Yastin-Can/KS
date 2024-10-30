@@ -227,7 +227,6 @@ button:active {
     form {
         justify-content: space-evenly;
         height: 50vw;
-        margin-top: 100%;
     }
     form input {
         font-size: 2vw;
@@ -239,6 +238,11 @@ button:active {
         font-size: 2vw;
         margin-left: 2vw;
         margin-right: 2vw;
+    }
+    .sing-in, .sing-up {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     
 }
