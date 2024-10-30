@@ -76,7 +76,7 @@ section {
 }
 
 .navbar-left .logo {
-    max-width: 20vw;
+    width: 20vw;
 }
 
 .navbar-center ul {
@@ -1370,7 +1370,6 @@ input {
 
 @media (max-width: 768px) {
     body {
-        margin-top: 11vw;
         color: #fff;
     }
 
@@ -1392,10 +1391,16 @@ input {
         margin-top: 2vw;
     }
 
-    .navbar-center,
+    .navbar-center{
+        display: none;
+    }
     .navbar-right,
     .navbar-left {
-        display: none;
+        display: flex;
+    }
+
+    .logo {
+        width: 30vw !important;
     }
 
     .info {
