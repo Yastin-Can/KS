@@ -335,7 +335,6 @@ def actualizar_carrito():
         session['precio_final'] = carrito_info["total_precio"]
         session['total_ps'] = carrito_info["total_precio"] // 300
 
-        # Preparar los datos para enviar al cliente
         items_actualizados = []
         for item in carrito_info["carrito_items"]:
             items_actualizados.append({
@@ -352,6 +351,34 @@ def actualizar_carrito():
                 'total_precio': carrito_info["total_precio"],
                 'total_ps': carrito_info["total_precio"] // 300
             }
+        })
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+    
+@app.route('/carrito/eliminar', methods=['POST'])
+def eliminar_del_carrito():
+    if 'username' not in session:
+        return jsonify({'success': False, 'error': 'No autorizado'}), 401
+
+    data = request.get_json()
+    producto_id = data.get('producto_id')
+    usuario_id = session['id']
+
+    try:
+        Carrito.delete_item(producto_id)
+        
+        carrito_info = Carrito.obtener_items(usuario_id)
+        
+        session['carrito_items'] = carrito_info["carrito_items"]
+        session['precio_final'] = carrito_info["total_precio"]
+        session['total_ps'] = carrito_info["total_precio"] // 300
+
+        return jsonify({
+            'success': True,
+            'precio_final': session['precio_final'],
+            'total_ps': session['total_ps'],
+            'total_items': len(session['carrito_items'])
         })
 
     except Exception as e:
@@ -446,7 +473,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        print(request.form)  # Esto imprimirá los datos del formulario en la consola
+        print(request.form)  
         try:
             email = request.form['email']
             password = request.form['pswd']

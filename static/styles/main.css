@@ -489,6 +489,43 @@ section {
     opacity: 2vw;
 }
 
+.carContent {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid #f0f0ff;
+    border-radius: 20px;
+    position: relative; 
+}
+
+.btn-eliminar {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 3vw;
+    height: 3vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 1; 
+}
+
+.btn-eliminar:hover {
+    background-color: #cc0000;
+}
+
+.btn-eliminar i {
+    font-size: 1em;
+    color: white;
+}
+
 .product-details {
     display: flex;
     flex-direction: column;

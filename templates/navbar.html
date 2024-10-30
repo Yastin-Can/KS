@@ -226,7 +226,10 @@
           <h2>PRODUCTOS</h2>
           <div class="carrito-container">
             {% for item in session['carrito_items'] %}
-            <div class="carContent">
+            <div class="carContent" data-producto-id="{{ item.producto_id }}">
+              <button class="btn-eliminar" onclick="eliminarProducto('{{ item.producto_id }}')">
+                <i class="fas fa-trash"></i>
+              </button>
               <img
                 class="car-el-producto"
                 src="{{ url_for('static', filename='img/' + item.imagen | lower | replace(' ', '-')) }}"

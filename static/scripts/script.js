@@ -322,3 +322,47 @@ function actualizarNumeroCarrito(totalItems) {
         numeroCarrito.textContent = totalItems;
     }
 }
+
+function eliminarProducto(productoId) {
+    fetch('/carrito/eliminar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            producto_id: productoId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Eliminar el elemento del carrito de la interfaz
+            const elementoCarrito = document.querySelector(`.carContent[data-producto-id="${productoId}"]`);
+            if (elementoCarrito) {
+                elementoCarrito.remove();
+            }
+
+            // Actualizar totales
+            document.getElementById('precio-final').textContent = data.precio_final;
+            document.getElementById('total-ps').textContent = data.total_ps;
+
+            // Actualizar contador del carrito
+            const numCantElements = document.querySelectorAll('#num-cant, #num-cantr, #num-cantrr');
+            numCantElements.forEach(el => {
+                el.textContent = data.total_items;
+            });
+
+            // Si el carrito está vacío, mostrar un mensaje
+            if (data.total_items === 0) {
+                const carritoContainer = document.querySelector('.carrito-container');
+                carritoContainer.innerHTML = '<p>El carrito está vacío</p>';
+            }
+        } else {
+            alert('Error al eliminar el producto');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al eliminar el producto');
+    });
+}

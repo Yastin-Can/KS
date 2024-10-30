@@ -45,11 +45,10 @@ class Carrito:
         return connectToMySQL('kiosco_saludable').query_db(query, data)
 
     @classmethod
-    def delete_item(cls, id):
-        query = "DELETE FROM carrito_items WHERE id = %(id)s;"
-        data = {"id": id}
-        result = connectToMySQL('kiosco_saludable').query_db(query, data)
-        return result
+    def delete_item(cls, producto_id):
+        query = "DELETE FROM carrito_items WHERE producto_id = %(producto_id)s;"
+        data = {"producto_id": producto_id}
+        return connectToMySQL('kiosco_saludable').query_db(query, data)
 
     @staticmethod
     def obtener_items(usuario_id):
